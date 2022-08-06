@@ -6,9 +6,9 @@ It's based on pygame.
 You can change npc image and bg.
 
 I love this project. I add a command system in that. So it can easily process the act or line I want.
----
 
 dialogue format(p or n can represent player and npcs):
+---
 
 'talker:line' to make system know who is talked now and can using right text color, text font and text size.
 
