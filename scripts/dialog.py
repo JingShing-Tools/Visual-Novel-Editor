@@ -1,8 +1,10 @@
 import pygame
 from settings import *
+import re
 
 class Dialog_box:
-    def __init__(self):
+    def __init__(self, level):
+        self.level = level
         
         self.screen_width = screen.get_size()[0]
         self.screen_height = screen.get_size()[1]
@@ -14,18 +16,25 @@ class Dialog_box:
         self.textbox_rect = self.textbox_surf.get_rect(center=(self.screen_width/2, self.screen_height/2 + 30))
         self.border_rect = self.textbox_surf.get_rect(topleft=(0, 0))
 
-        # talker icon
-        self.talker_imgs = {
+        self.talker_image_or = {
+            'none': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/none_chr.png')), (152, 152)),
             'player': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/player_1_face.png')), (152, 152)),
             'npc' : pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/npc_1_face.png')), (152, 152)),
+        }
+        # talker icon
+        self.talker_img_name = {
+            'player': 'player',
+            'npc' : 'npc',
             }
-        self.talker_image = self.talker_imgs['npc'].copy()
+        self.talker_image = self.talker_image_or['none'].copy()
         # self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
         self.talker_image_rect = self.talker_image.get_rect(bottomleft = self.textbox_rect.topleft)
 
         # line progress
         self.text = 'Hello world!'
+        # all line and command
         self.multiline = []
+        # only line need to print
         self.multi_label = []
         self.multiline_max_line = 4
         self.line_internal = 35
@@ -40,73 +49,103 @@ class Dialog_box:
         # self.bg_alpha = 0
 
     def gradual_typing(self):
+        # test change bg
+        # self.level.change_bg('bg')
+
         # dialog box bg
         # screen.blit(self.textbox_surf, self.textbox_rect)
         if self.typing:
             line_num = len(self.multiline)
             self.multi_label.clear()
-
             rendering = ''
             # self.multi_label.clear()
-            for rows, lines in enumerate(self.multiline):
-                # print(str(rows) + ' ' + str(line_num) + ' ' + lines)
+            for line_id, lines in enumerate(self.multiline):
+                # print(str(line_id) + ' ' + str(line_num) + ' ' + lines)
                 self.textbox_surf.fill(self.text_frame_color)
                 pygame.draw.rect(self.textbox_surf, "black", self.border_rect, 6)
-                if ':' in lines:
-                    talker_and_line = lines.split(':')
-                    if len(talker_and_line)>1:
-                        talker = talker_and_line[0]
-                        if talker == 'p' or talker == 'player':
-                            talker = 'player'
-                            self.text_color = 'red'
-                        else:
-                            talker = 'npc'
-                            self.text_color = 'black'
-                        self.talker_image = self.talker_imgs[talker].copy()
-                        if talker == 'npc':
-                            self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
-                        elif talker == 'player':
-                            self.talker_image_rect = self.talker_image.get_rect(bottomleft = self.textbox_rect.topleft)
-                        lines = talker_and_line[-1]
+                if '@' in lines:
+                    if '=' in lines:
+                        info_act = re.split('@|=| ', lines)
+                        # get 'talker.img'
+                        talker = info_act[1]
+                        if '.img' in talker:
+                            talker_img_name = info_act[-1]
+                            talker = talker.split('.')[0]
+                            if talker_img_name == 'p':
+                                talker_img_name = 'player'
+                            elif talker_img_name == 'n':
+                                talker_img_name = 'npc'
+                            if talker == 'p':
+                                talker = 'player'
+                            elif talker == 'n':
+                                talker = 'npc'
+                            self.talker_img_name[talker] = talker_img_name
+                            # only do once and delete from cache
+                            # self.multiline.pop(line_id)
+                            # change to no meaning command
+                        elif 'bg' in talker:
+                            bg_img_name = info_act[-1]
+                            self.level.scene = bg_img_name
+                            self.level.change_bg()
+                    self.multiline[line_id]='@'
                 else:
-                    self.talker_image = self.talker_imgs['npc'].copy()
+                    if ':' in lines:
+                        talker_and_line = lines.split(':')
+                        if len(talker_and_line)>1:
+                            talker = talker_and_line[0]
+                            if talker == 'p' or talker == 'player':
+                                talker = 'player'
+                                self.text_color = 'red'
+                            else:
+                                talker = 'npc'
+                                self.text_color = 'black'
+                            if talker == 'npc':
+                                self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
+                            elif talker == 'player':
+                                self.talker_image_rect = self.talker_image.get_rect(bottomleft = self.textbox_rect.topleft)
+                            lines = talker_and_line[-1]
+                    else:
+                        self.text_color = 'black'
+                        talker = 'npc'
+                    self.talker_image = self.talker_image_or[self.talker_img_name[talker]].copy()
                     self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
 
-                if line_num > 1 and rows < line_num - 1:
-                    row_text = self.font.render(lines, 1, self.text_color)
-                    self.multi_label.append(row_text)
+                    if line_num > 1 and line_id < line_num - 1:
+                        row_text = self.font.render(lines, 1, self.text_color)
+                        self.multi_label.append(row_text)
 
-                elif rows == line_num - 1:
-                    # gradual type part
-                    self.multi_label.append(self.text)
-                    for char in lines:
-                        pygame.time.delay(self.scrolling_text_time)
-                        pygame.event.clear()
+                    elif line_id == line_num - 1:
+                        # gradual type part
+                        self.multi_label.append(self.text)
+                        for char in lines:
+                            pygame.time.delay(self.scrolling_text_time)
+                            pygame.event.clear()
 
-                        rendering = rendering + char
-                        rendered_text = self.font.render(rendering, 1, self.text_color)
-                        # text_rect = rendered_text.get_rect(topleft=(20, 30))
+                            rendering = rendering + char
+                            rendered_text = self.font.render(rendering, 1, self.text_color)
+                            # text_rect = rendered_text.get_rect(topleft=(20, 30))
 
-                        self.multi_label[-1] = rendered_text
-                        # screen.fill(self.bg_color)
-                        # screen.set_alpha(self.bg_alpha)
-                        # self.textbox_surf.blit(rendered_text, text_rect)
-                        for line in range(len(self.multi_label)):
-                            self.textbox_surf.blit(self.multi_label[line], (20, 30 + line * self.line_internal))
-                            crt_shader()
-                        self.result_print()
+                            self.multi_label[-1] = rendered_text
+                            # screen.fill(self.bg_color)
+                            # screen.set_alpha(self.bg_alpha)
+                            # self.textbox_surf.blit(rendered_text, text_rect)
+                            for line in range(len(self.multi_label)):
+                                self.textbox_surf.blit(self.multi_label[line], (20, 30 + line * self.line_internal))
+                                crt_shader()
+                            self.result_print()
 
         self.typing = False
     
     def add_line(self, text):
         self.text = text
-        if len(self.multiline) <= self.multiline_max_line - 1:
+        if len(self.multi_label)<= self.multiline_max_line - 1:
             self.multiline.append(self.text)
         else:
             self.refresh_lines()
             self.multiline.append(self.text)
 
     def refresh_lines(self):
+        self.multiline_command_offset = 0
         self.multiline.clear()
         self.multi_label.clear()
 

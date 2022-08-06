@@ -65,9 +65,13 @@ class Gui_helper:
         # clear text list first
         self.textlistbox.delete(0, END)
         # then insert all the lines
-        for line in npc_lines_all:
-            if not(':'in line):
-                    line = 'n:'+line
+        for line in lines_acts_all:
+            # fix no talker
+            # command ignore
+            if '@' in line:
+                pass
+            elif not(':'in line):
+                line = 'n:'+line
             self.textlistbox.insert(END, line)
 
     def edit_line(self):
@@ -76,15 +80,16 @@ class Gui_helper:
         if len(list_chose) > 0:
             if line:
                 if ':' in line and line.split(':')[-1] == '':
-                    new_line = line + npc_lines_all[list_chose[0]].split(':')[-1]
-                    print(new_line)
+                    new_line = line + lines_acts_all[list_chose[0]].split(':')[-1]
+                elif '@'in line:
+                    new_line = line
                 elif not(':' in line):
                     new_line = self.textlistbox.get(list_chose[0]).split(':')[0] + ':' + line
                 else:
                     new_line = line
-                npc_lines_all[list_chose[0]] = new_line
+                lines_acts_all[list_chose[0]] = new_line
             else:
-                del npc_lines_all[list_chose[0]]
+                del lines_acts_all[list_chose[0]]
             self.init_textlist()
         else:
             self.init_textlist()
@@ -94,14 +99,17 @@ class Gui_helper:
         line = self.lineinput.get()
         if line:
             if list_chose:
+                if line == '@copy':
+                    print('TTT')
+                    line = self.textlistbox.get(list_chose)
                 # add line in middle
                 self.textlistbox.insert(list_chose[0]+1, line)                
-                npc_lines_all.clear()
+                lines_acts_all.clear()
                 for i in range(self.textlistbox.size()):
-                    npc_lines_all.append(self.textlistbox.get(i))
+                    lines_acts_all.append(self.textlistbox.get(i))
             else:
                 self.textlistbox.insert(END, line)
-                npc_lines_all.append(line)
+                lines_acts_all.append(line)
         else:
             self.init_textlist()
 
@@ -109,18 +117,29 @@ class Gui_helper:
         global load_file_name
         file_name = self.file_name_input.get()
         file_format = self.file_format_input.get()
+        file_name_now = load_file_name.get()
         if file_name:
             if not(file_format):
-                file_format = '.dialogue'
+                file_format = '.txt'
             if not('.' in file_format):
                 file_format = '.' + file_format
             load_file_name.set(file_name)
             path = './' + file_name + file_format
-            save_dialogue(path, npc_lines_all)
+            lines_acts_all.clear()
+            for i in range(self.textlistbox.size()):
+                lines_acts_all.append(self.textlistbox.get(i))
+            save_dialogue(path, lines_acts_all)
+        elif not(file_name) and file_name_now!='none':
+            path = './' + file_name_now + '.txt'
+            lines_acts_all.clear()
+            for i in range(self.textlistbox.size()):
+                lines_acts_all.append(self.textlistbox.get(i))
+            save_dialogue(path, lines_acts_all)
+
 
     def load_lines(self):
-        # npc_lines_all = load_dialogue()
-        # print(npc_lines_all)
+        # lines_acts_all = load_dialogue()
+        # print(lines_acts_all)
         dialogue_path = filedialog.askopenfilename()
         if dialogue_path:
             # print(dialogue_path)
@@ -129,9 +148,9 @@ class Gui_helper:
             global load_file_name
             load_file_name.set(file_name)
             lines = load_dialogue(dialogue_path)
-            npc_lines_all.clear()
+            lines_acts_all.clear()
             for line in lines:
-                npc_lines_all.append(line)
+                lines_acts_all.append(line)
             self.init_textlist()
 
     def edit_img(self):
