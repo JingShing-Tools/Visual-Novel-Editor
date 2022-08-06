@@ -24,7 +24,7 @@ commands(all using @ forehead. and p or n can represent player and npcs):
 '@bg=bg' -> change background image to certain image.
 
 '@copy' -> if you using add line with this command you can copy select line to the bottom of select line.
----
+
 ```
 ver 0.2
 add command system in input line.
