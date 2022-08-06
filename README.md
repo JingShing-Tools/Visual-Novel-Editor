@@ -28,4 +28,19 @@ example-> 'n:hello'
 If you only text 'p:' : the line will only change talker -> 'p:hello'
 If you only text 'line' : the line will only change text -> 'n:line'
 If you text 'p:line' : the line will all change -> 'p:line'
+
+ver0.3
+can change img now.
+using '@' command:
+examples->
+'@n.img=p' -> change npc's image to player
+'@npc.img=player' -> change npc's image to player
+add multi bg control
+
+add '@bg=name' command
+can use @bg=name to change bg to the name level had bg name.
+
+add '@copy' command
+if you type @same and click add line button. It will copy the line
+you select in list. and add same line under it.
 ```
