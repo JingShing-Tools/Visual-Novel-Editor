@@ -86,6 +86,7 @@ class Dialog_box:
                             # change to no meaning command
                         elif 'bgm' in talker:
                             bgm_name = info_act[-1]
+                            print(info_act)
                             set_bgm(bgm_name, True)
                         elif 'bg' in talker:
                             bg_img_name = info_act[-1]

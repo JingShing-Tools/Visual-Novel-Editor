@@ -37,7 +37,9 @@ def load_dialogue(path):
             while(1):
                 line = file.readline()
                 if not(line):break
-                else:lines.append(line)
+                else:
+                    line = line.replace('\n', '')
+                    lines.append(line)
             return lines
 
 
