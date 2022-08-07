@@ -33,6 +33,8 @@ commands(all using @ forehead. and p or n can represent player and npcs):
 
 '@copy' -> if you using add line with this command you can copy select line to the bottom of select line.
 
+'@bgm=bgm_name'->change bgm to the assets/audio/bgm/bgm_name.mp3
+
 ```
 ver 0.2
 add command system in input line.
