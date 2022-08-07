@@ -63,4 +63,12 @@ can use @bg=name to change bg to the name level had bg name.
 add '@copy' command
 if you type @same and click add line button. It will copy the line
 you select in list. and add same line under it.
+
+add '@get' command
+use edit line to get the line select
+
+ver0.4
+add '@bgm=bgm_name' command
+'@bgm=bgm_name' will change bgm into bgm in audio folder.
+
 ```
