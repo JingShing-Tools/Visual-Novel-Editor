@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 import re
+from music_player import *
 
 class Dialog_box:
     def __init__(self, level):
@@ -83,6 +84,9 @@ class Dialog_box:
                             # only do once and delete from cache
                             # self.multiline.pop(line_id)
                             # change to no meaning command
+                        elif 'bgm' in talker:
+                            bgm_name = info_act[-1]
+                            set_bgm(bgm_name, True)
                         elif 'bg' in talker:
                             bg_img_name = info_act[-1]
                             self.level.scene = bg_img_name

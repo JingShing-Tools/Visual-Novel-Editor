@@ -1,6 +1,7 @@
 import pygame, sys
 from settings import *
 from level import Level
+from music_player import *
 
 class Game:
     def __init__(self, fullscreen = False):
@@ -19,6 +20,7 @@ class Game:
         self.level = Level()
         self.level.title_screen()
         self.level.menu_state = 'title'
+        set_bgm(bgm_name)
 
     def run(self):
         while self.running:

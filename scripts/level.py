@@ -3,6 +3,7 @@ from settings import *
 from menu import Menu
 from dialog import Dialog_box
 from save_and_load import found_save_or_not
+from music_player import bgm_pause
 
 class Level:
     def __init__(self):
@@ -62,6 +63,13 @@ class Level:
 
     def toggle_menu(self):
         self.game_paused = not(self.game_paused)
+        if self.game_paused:
+            if self.menu_state != 'title':
+                bgm_pause(self.game_paused)
+        else:
+            if not(pygame.mixer.music.get_busy()):
+                bgm_pause(self.game_paused)
+
 
     def title_screen(self):
         self.prev_menu_state = self.menu_state
