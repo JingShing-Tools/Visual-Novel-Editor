@@ -13,19 +13,19 @@ def load_file(level):
 
 def list_save_dialogue(path, lines):
     if path:
-        with open(path, 'w') as save_file:
+        with open(path, 'w', encoding='UTF-8') as save_file:
             json.dump(lines, save_file)
 
 def save_dialogue(path, lines):
     if path:
-        with open(path, 'w') as file:
+        with open(path, 'w', encoding='UTF-8') as file:
             for line in lines:
                 file.write(line + '\n')
 
 def list_load_dialogue(path):
     if path:
         # read all
-        with open(resource_path(path)) as save_file:
+        with open(resource_path(path), encoding='UTF-8') as save_file:
             lines = json.load(save_file)
             return lines
 
@@ -33,7 +33,7 @@ def load_dialogue(path):
     if path:
         # read line by line
         lines = []
-        with open(resource_path(path)) as file:
+        with open(resource_path(path), encoding='UTF-8') as file:
             while(1):
                 line = file.readline()
                 if not(line):break

@@ -7,7 +7,8 @@ class Menu:
         # general setup
         
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
-        self.button_names = ['New game', 'Continue', 'option', 'Exit', 'save', 'load']
+        # self.button_names = ['New game', 'Continue', 'option', 'Exit', 'save', 'load']
+        self.button_names = ['New game','Exit']
         self.button_nums = len(self.button_names)
         self.level = level
         self.bg = pygame.image.load(resource_path('assets/graphics/stages/bg_2.png')).convert()
