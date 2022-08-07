@@ -24,7 +24,9 @@ class Gui_helper:
         # line input
         self.linetext = Label(self.root,text='Input Line :')
         self.linetext.grid(column=1, row=0, sticky=N + W)
-        self.lineinput = Entry(self.root,width=25)
+        global InputLineText
+        InputLineText = StringVar()
+        self.lineinput = Entry(self.root,width=25,textvariable=InputLineText)
         self.lineinput.grid(column=1, row=1, columnspan=3, sticky=N)
         # buttons
         self.edit_line_btn = Button(self.root, text='edit line', command=self.edit_line)
@@ -82,7 +84,10 @@ class Gui_helper:
                 if ':' in line and line.split(':')[-1] == '':
                     new_line = line + lines_acts_all[list_chose[0]].split(':')[-1]
                 elif '@'in line:
-                    new_line = line
+                    if line == '@get':
+                        global InputLineText
+                        InputLineText.set(self.textlistbox.get(list_chose))
+                    else:new_line = line
                 elif not(':' in line):
                     new_line = self.textlistbox.get(list_chose[0]).split(':')[0] + ':' + line
                 else:
@@ -100,7 +105,6 @@ class Gui_helper:
         if line:
             if list_chose:
                 if line == '@copy':
-                    print('TTT')
                     line = self.textlistbox.get(list_chose)
                 # add line in middle
                 self.textlistbox.insert(list_chose[0]+1, line)                

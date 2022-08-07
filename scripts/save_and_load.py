@@ -11,16 +11,35 @@ def load_file(level):
         with open('save_file.txt') as save_file:
             pass
 
-def save_dialogue(path, lines):
+def list_save_dialogue(path, lines):
     if path:
         with open(path, 'w') as save_file:
             json.dump(lines, save_file)
 
-def load_dialogue(path):
+def save_dialogue(path, lines):
     if path:
+        with open(path, 'w') as file:
+            for line in lines:
+                file.write(line + '\n')
+
+def list_load_dialogue(path):
+    if path:
+        # read all
         with open(resource_path(path)) as save_file:
             lines = json.load(save_file)
             return lines
+
+def load_dialogue(path):
+    if path:
+        # read line by line
+        lines = []
+        with open(resource_path(path)) as file:
+            while(1):
+                line = file.readline()
+                if not(line):break
+                else:lines.append(line)
+            return lines
+
 
 def found_save_or_not(level):
     # check if save_file.txt exist

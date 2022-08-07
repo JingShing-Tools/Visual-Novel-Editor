@@ -108,7 +108,7 @@ class Dialog_box:
                         self.text_color = 'black'
                         talker = 'npc'
                     self.talker_image = self.talker_image_or[self.talker_img_name[talker]].copy()
-                    self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
+                    # self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
 
                     if line_num > 1 and line_id < line_num - 1:
                         row_text = self.font.render(lines, 1, self.text_color)

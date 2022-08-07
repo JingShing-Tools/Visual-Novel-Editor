@@ -119,7 +119,7 @@ class Level:
                 if len(self.lines)>0:
                     # self.dialog.add_line(self.lines[self.line_index])
                     # self.speak_sound.play()
-                    self.next_line_add()
+                    self.next_line_add(True)
             if keys[pygame.K_RETURN]:
                 self.press_key_time = pygame.time.get_ticks()
                 self.can_press_key = False
@@ -132,8 +132,13 @@ class Level:
                 self.language = self.languages[self.language_index]
                 self.language_change()
     
-    def next_line_add(self):        
-        if self.line_index < len(self.lines) - 1:
+    def next_line_add(self, using_talk_key = False):
+        if using_talk_key:
+            self.dialog.add_line(self.lines[self.line_index])
+            if '@' in self.lines[self.line_index]:
+                self.next_line_add()
+            self.speak_sound.play()
+        elif self.line_index < len(self.lines) - 1:
             self.line_index += 1
             self.dialog.add_line(self.lines[self.line_index])
             self.dialog.typing = True
