@@ -7,6 +7,14 @@ You can change npc image and bg.
 
 I love this project. I add a command system in that. So it can easily process the act or line I want.
 
+press 'T' to talk.
+
+press 'enter' to continue dialogue.
+
+press 'F' to fullscreen.
+
+press '0' to change filter. -> no has crt tv, scan line and no filter.
+
 dialogue format(p or n can represent player and npcs):
 ---
 
