@@ -1,0 +1,34 @@
+n:Just give up.
+p:what?
+n:You can't go out there.
+n:No chance.
+p:don't be so negetive.
+n:We just stuck in here.
+n:Do you like here?
+p:yah!
+n:Oh. I see. you like crt monitor. huh.
+@bgm=harmony
+n:That's a sick man.
+n:If you want to leave.
+n:You can find the X button.
+p:what button?
+n:Im not talking to you.
+n:Im talking to 'you'.
+n:But that's not the method.
+n:To release our soul.
+@end
+
+@stage2
+p:I don't like here.
+p:Please let me out.
+p:you can help me right?
+@bgm=hollow_pillow
+p:something goes wrong.
+p:I must be free.
+p:Or I will freak out.
+p:Are you prison me?
+p:Where is the weird knight man?
+p:I trapped here.
+@p.img=n
+p:oh no. I'm the knight.
+@end
