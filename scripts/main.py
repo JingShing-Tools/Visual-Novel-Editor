@@ -20,6 +20,7 @@ class Game:
         self.level = Level()
         self.level.title_screen()
         self.level.menu_state = 'title'
+        bgm_name = 'light_tune'
         set_bgm(bgm_name)
 
     def run(self):
@@ -56,7 +57,7 @@ class Game:
         pygame.quit()
         sys.exit()
 
-need_helper = True
+need_helper = False
 if __name__ == '__main__':
     game = Game()
     if need_helper:
