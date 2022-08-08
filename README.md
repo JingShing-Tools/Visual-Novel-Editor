@@ -90,4 +90,15 @@ ver0.5
 add multilang change function.
 add new function in level -> change_line_script(self, script_name) :
 can import script and multilangs script into game
+
+ver0.6
+add custom player name and custom npc name
+bug:edit line feature kinda broke
+fixed:level.language_change func init the lines
+
+add new command in script : 
+'@player=name' and '@npc=name' will add name to list and can refer as character name.
+example -> '@player=JingShing' character will named JingShing.
+and you need to use custom name to write lines
+name:line instead of player:line
 ```
