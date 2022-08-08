@@ -132,7 +132,8 @@ class Level:
                     set_bgm('GlassTemple', True)
                     lines_acts_all.clear()
                     self.scene='bg2'
-                self.language_change()
+                if self.dialogue_done_times != 0:
+                    self.language_change()
                 self.change_bg()
                 self.press_key_time = pygame.time.get_ticks()
                 self.can_press_key = False
