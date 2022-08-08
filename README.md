@@ -83,4 +83,8 @@ ver0.4
 add '@bgm=bgm_name' command
 '@bgm=bgm_name' will change bgm into bgm in audio folder.
 
+ver0.5
+add multilang change function.
+add new function in level -> change_line_script(self, script_name) :
+can import script and multilangs script into game
 ```
