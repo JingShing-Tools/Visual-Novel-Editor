@@ -17,6 +17,9 @@ press 'F' to fullscreen.
 
 press '0' to change filter. -> no has crt tv, scan line and no filter.
 
+p.s. If you want to use this visual novel maker and don't know how to write a dialogue script with command. can look my scripts
+on here : https://github.com/JingShing/Visual-Novel-Scripts
+
 dialogue format(p or n can represent player and npcs):
 ---
 
