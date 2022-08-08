@@ -3,7 +3,7 @@ from settings import *
 from menu import Menu
 from dialog import Dialog_box
 from save_and_load import found_save_or_not
-from music_player import bgm_pause
+from music_player import bgm_pause, set_bgm
 
 class Level:
     def __init__(self):
@@ -26,6 +26,7 @@ class Level:
         self.dialogue_done_times = 0
         self.line_index = 0
         self.language = 'english'
+        # self.languages = ['english', 'tchinese']
         self.languages = ['english', 'tchinese', 'schinese']
         self.language_index = 0
         self.lines = lines_acts_all
@@ -106,6 +107,8 @@ class Level:
             self.import_lines(all_lines_en, lines_acts_all)
         elif self.language == 'tchinese':
             self.import_lines(all_lines_tch, lines_acts_all)
+        elif self.language == 'schinese':
+            self.import_lines(all_lines_sch, lines_acts_all)
 
     def handle_control(self):
         keys = pygame.key.get_pressed()
@@ -114,16 +117,25 @@ class Level:
         if self.can_press_key:
             self.dialog.blit_press_hint()
             if keys[pygame.K_t]:
-                # if self.dialogue_done_times == 0:
-                #     self.scene='bg2'
-                # else:
-                #     self.scene='bg'
-                self.change_bg()
-                self.press_key_time = pygame.time.get_ticks()
-                self.can_press_key = False
                 self.dialog.refresh_lines()
                 self.dialog.show_textbox = True
                 self.dialog.typing = True
+                if self.dialogue_done_times == 0:
+                    self.scene='bg2'
+                elif self.dialogue_done_times == 1:
+                    self.change_line_script('default_2')
+                    self.scene='bg'
+                else:
+                    self.dialog.show_textbox = False
+                    self.dialog.typing = False
+                    self.dialog.ending = True
+                    set_bgm('GlassTemple', True)
+                    lines_acts_all.clear()
+                    self.scene='bg2'
+                self.language_change()
+                self.change_bg()
+                self.press_key_time = pygame.time.get_ticks()
+                self.can_press_key = False
                 if len(self.lines)>0:
                     # self.dialog.add_line(self.lines[self.line_index])
                     # self.speak_sound.play()
@@ -139,12 +151,20 @@ class Level:
                 self.language_index = (self.language_index + 1)  % len(self.languages)
                 self.language = self.languages[self.language_index]
                 self.language_change()
+
+    def change_line_script(self, script_name):
+        now_dia_file = script_name
+        path = dia_fore_path + now_dia_file + now_dia_file_format
+        if found_dialogue_or_not(now_dia_file+now_dia_file_format):
+            load_dialogue(path,lines_acts_all)
+            change_lines_all_langs(now_dia_file)
     
     def next_line_add(self, using_talk_key = False):
         if using_talk_key:
-            self.dialog.add_line(self.lines[self.line_index])
-            if '@' in self.lines[self.line_index]:
-                self.next_line_add()
+            if self.line_index < len(self.lines):
+                self.dialog.add_line(self.lines[self.line_index])
+                if '@' in self.lines[self.line_index]:
+                    self.next_line_add()
             self.speak_sound.play()
         elif self.line_index < len(self.lines) - 1:
             self.line_index += 1
