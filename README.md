@@ -101,4 +101,15 @@ add new command in script :
 example -> '@player=JingShing' character will named JingShing.
 and you need to use custom name to write lines
 name:line instead of player:line
+
+'@player=clear' or '@npc=clear' will clear name list
+
+add multi character icon system. It will add a new key to dict
+to recognize what custom name should be used what image.
+In default if you create a new name. default will set image to 'none'.
+you need to use '@name.img=p' to change img.
+
+add flag feature. You can now write all scene in one script.
+You just need to add '@end' to note the end of scene.
+And use '@stage name' to add flag to different stages.
 ```
