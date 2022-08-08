@@ -29,18 +29,30 @@ def list_load_dialogue(path):
             lines = json.load(save_file)
             return lines
 
-def load_dialogue(path):
+def load_dialogue(path, lines, start_line = None):
+    found = False
     if path:
+        lines.clear()
         # read line by line
-        lines = []
         with open(resource_path(path), encoding='UTF-8') as file:
             while(1):
                 line = file.readline()
+                if start_line and not(found):
+                    if not(line):break
+                    else:
+                        line = line.replace('\n', '')
+                    if line == start_line:
+                        found = True
+                        continue
+                    elif line!=start_line and not(found):
+                        continue
                 if not(line):break
+                elif line == '\n' or line == '':continue
                 else:
                     line = line.replace('\n', '')
-                    lines.append(line)
-            return lines
+                    if line == '@end':break
+                    else:
+                        lines.append(line)
 
 
 def found_save_or_not(level):
@@ -51,9 +63,11 @@ def found_save_or_not(level):
     except:
         level.has_save = False
 
+import os
 def found_dialogue_or_not(file_name):
-    try:
-        with open(resource_path('dialogues/' + file_name)) as save_file:
-            return True
-    except:
-        return False
+    return os.path.exists(resource_path('dialogues/' + file_name))
+    # try:
+    #     with open(resource_path('dialogues/' + file_name)) as save_file:
+    #         return True
+    # except:
+    #     return False

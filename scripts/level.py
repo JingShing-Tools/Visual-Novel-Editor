@@ -123,7 +123,7 @@ class Level:
                 if self.dialogue_done_times == 0:
                     self.scene='bg2'
                 elif self.dialogue_done_times == 1:
-                    self.change_line_script('default_2')
+                    self.change_line_script('default', '@stage2')
                     self.scene='bg'
                 else:
                     self.dialog.show_textbox = False
@@ -153,12 +153,12 @@ class Level:
                 self.language = self.languages[self.language_index]
                 self.language_change()
 
-    def change_line_script(self, script_name):
+    def change_line_script(self, script_name, flag=None):
         now_dia_file = script_name
         path = dia_fore_path + now_dia_file + now_dia_file_format
         if found_dialogue_or_not(now_dia_file+now_dia_file_format):
-            load_dialogue(path,lines_acts_all)
-            change_lines_all_langs(now_dia_file)
+            load_dialogue(path,lines_acts_all, flag)
+            change_lines_all_langs(now_dia_file, flag)
     
     def next_line_add(self, using_talk_key = False):
         if using_talk_key:

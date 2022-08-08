@@ -24,6 +24,7 @@ class Dialog_box:
         }
         # talker icon
         self.talker_img_name = {
+            'Unknown':'none',
             'player': 'player',
             'npc' : 'npc',
             }
@@ -52,8 +53,8 @@ class Dialog_box:
         # self.bg_alpha = 0
 
         # npc and player name
-        self.npcs_list = []
-        self.player_list = []
+        self.npcs_list = ['npc']
+        self.player_list = ['player']
         self.talker_type = 'none'
         self.talker_name = 'Unknown'
         self.talker_name_surf = self.font.render(self.talker_name, False, TEXT_COLOR)
@@ -108,13 +109,16 @@ class Dialog_box:
                                 if character_name == 'clear':
                                     self.npcs_list.clear()
                                 else:
-                                    self.npcs_list.append(character_name)
-                            elif talker == 'player' or talker == 'p':                                
+                                    if not(character_name in self.npcs_list):
+                                        self.npcs_list.append(character_name)
+                            elif talker == 'player' or talker == 'p':
                                 if character_name == 'clear':
                                     self.player_list.clear()
                                 else:
-                                    self.player_list.append(character_name)
-                                    print(self.player_list)
+                                    if not(character_name in self.player_list):
+                                        self.player_list.append(character_name)
+                            if not(character_name in self.talker_img_name):
+                                self.talker_img_name[character_name] = 'none'
 
                     self.multiline[line_id]='@'
                 else:
@@ -150,9 +154,12 @@ class Dialog_box:
                     else:
                         self.text_color = 'black'
                         self.talker_type = 'npc'
-                    self.talker_image = self.talker_image_or[self.talker_img_name[self.talker_type]].copy()
-                    # self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
-                    # self.show_talker_name(talker)
+
+                    # to determine if img name has this character
+                    if self.talker_name in self.talker_img_name:
+                        self.talker_image = self.talker_image_or[self.talker_img_name[self.talker_name]].copy()
+                    else:
+                        self.talker_image = self.talker_image_or[self.talker_img_name[self.talker_type]].copy()
 
                     if line_num > 1 and line_id < line_num - 1:
                         row_text = self.font.render(lines, 1, self.text_color)
@@ -189,9 +196,6 @@ class Dialog_box:
             self.talker_name_rect = self.talker_name_surf.get_rect(bottomright = self.talker_image_rect.bottomleft)
         else:
             self.talker_name_rect = self.talker_name_surf.get_rect(bottomleft = self.talker_image_rect.bottomleft)
-        # pygame.draw.rect(self.talker_image, UI_BG_COLOR, self.talker_name_rect.inflate(20, 20))
-        # self.talker_image.blit(self.talker_name_surf, self.talker_name_rect)
-        # pygame.draw.rect(self.talker_image, UI_BORDER_COLOR, self.talker_name_rect.inflate(20, 20), 3)
         pygame.draw.rect(screen, UI_BG_COLOR, self.talker_name_rect.inflate(self.talker_name_frame_extend))
         screen.blit(self.talker_name_surf, self.talker_name_rect)
         pygame.draw.rect(screen, UI_BORDER_COLOR, self.talker_name_rect.inflate(self.talker_name_frame_extend), 3)
