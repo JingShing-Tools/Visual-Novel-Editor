@@ -1,0 +1,3 @@
+need_help=True
+title_screen_text=Game
+dialogue_file_name=default
