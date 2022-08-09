@@ -54,7 +54,7 @@ commands(all using @ forehead. and p or n can represent player and npcs):
 
 '@sceneX' -> you need to put number in X to tell editor what scene is it.
 
-'@delay=X' -> you need to put X a number to tell editor what conversation delay should be. Default is 10.
+'@delay=X' -> you need to put X a number to tell editor what conversation delay should be. Default is 35.
 
 ':@' -> if you want to print '@' in dialogue just add ':' in line.
 
