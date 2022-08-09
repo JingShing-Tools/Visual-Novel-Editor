@@ -149,4 +149,27 @@ add new way to add images. If you want to add a new image for your game.
 Just put image into 'assets/graphics/characters/' or 'assets/graphics/stages/'
 System will automatically sort into dict for you. Now can only differ 'png' and 'png' format.
 it will be like 'image.png' -> dict = {'image' : surface('image.png')}
+
+
+
+ver 0.7
+bug: no dialogue in folder fault
+fixed
+
+add '@name.color=color' command to change text color
+
+now switching character will refresh text.
+
+add a config file can modify helper window, title screen text and dialogue file name default.
+
+add new feature you can now just define talker name onece than just add text.
+example->
+n:text
+text
+text
+
+same as
+n:text
+n:text
+n:text
 ```
