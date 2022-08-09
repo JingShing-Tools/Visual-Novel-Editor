@@ -1,6 +1,8 @@
 # Visual-Novel-Editor
 A derivative of my Dialogue Editor. It's purely a visual novel style
 
+You can get this editor exe now on Itch.io : https://jingshing.itch.io/visualnovelmaker
+
 A game based on this editor is available on itch.io : https://jingshing.itch.io/crt-prison
 
 It's based on pygame.
