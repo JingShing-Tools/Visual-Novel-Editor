@@ -32,6 +32,10 @@ Every talkers' text style can be changed in future edition.
 commands(all using @ forehead. and p or n can represent player and npcs):
 ---
 
+if you use edit and text box is empty will trigger special effect.
+
+if you select line with this action will delete line. And if you didn't select line will refresh line list.
+
 '@p.img=n' -> player's head image changed to npc's image.
 
 '@bg=bg' -> change background image to certain image.
