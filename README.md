@@ -48,9 +48,13 @@ if you select line with this action will delete line. And if you didn't select l
 
 '@player=name' -> add a character to player name list. You can use it to create your own character and use it in script.
 
+p.s. You may need to use 'name.img=p' to give it a image.
+
 '@player=clear' -> clear player name list.
 
 '@npc=name' -> add a character to npc name list.
+
+p.s. You may need to use 'name.img=n' to give it a image.
 
 '@npc=clear' -> clear npc name list.
 
