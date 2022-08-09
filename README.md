@@ -15,7 +15,7 @@ press 'enter' to continue dialogue.
 
 press 'F' to fullscreen.
 
-press '0' to change filter. -> no has crt tv, scan line and no filter.
+press '0' to change filter. -> now has crt tv, scan line and no filter.
 
 p.s. If you want to use this visual novel maker and don't know how to write a dialogue script with command. can look my scripts
 on here : https://github.com/JingShing/Visual-Novel-Scripts
