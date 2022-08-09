@@ -2,6 +2,7 @@ import pygame
 from settings import *
 import re
 from music_player import *
+from save_and_load import found_asset_imgs
 
 class Dialog_box:
     def __init__(self, level):
@@ -18,10 +19,11 @@ class Dialog_box:
         self.border_rect = self.textbox_surf.get_rect(topleft=(0, 0))
 
         self.talker_image_or = {
-            'none': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/none_chr.png')), (152, 152)),
-            'player': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/player_1_face.png')), (152, 152)),
-            'npc' : pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/npc_1_face.png')), (152, 152)),
+            'none': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/none.png')), (152, 152)),
+            # 'player': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/player.png')), (152, 152)),
+            # 'npc' : pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/npc.png')), (152, 152)),
         }
+        found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=self.talker_image_or, transform=True)
         # talker icon
         self.talker_img_name = {
             'Unknown':'none',

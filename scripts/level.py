@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from menu import Menu
 from dialog import Dialog_box
-from save_and_load import found_save_or_not
+from save_and_load import found_save_or_not, found_asset_imgs
 from music_player import bgm_pause, set_bgm
 
 class Level:
@@ -41,8 +41,9 @@ class Level:
         # bgs
         self.bg_img = {
             'bg':pygame.image.load(resource_path('assets/graphics/stages/bg.png')).convert(),
-            'bg2':pygame.image.load(resource_path('assets/graphics/stages/bg_2.png')).convert(),
+            # 'bg2':pygame.image.load(resource_path('assets/graphics/stages/bg2.png')).convert(),
         }
+        found_asset_imgs(folder_path='assets/graphics/stages/', img_dict=self.bg_img)
         self.change_bg('bg')
         self.scene = 'bg2'
 

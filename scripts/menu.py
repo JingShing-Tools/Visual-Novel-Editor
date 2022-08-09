@@ -11,7 +11,7 @@ class Menu:
         self.button_names = ['New game','Exit']
         self.button_nums = len(self.button_names)
         self.level = level
-        self.bg = pygame.image.load(resource_path('assets/graphics/stages/bg_2.png')).convert()
+        self.bg = level.bg_img['bg2']
         self.bg_rect = self.bg.get_rect(topleft = (0, 0))
         
         # menu title names setup
@@ -145,7 +145,8 @@ class Button:
         menu = level.menu_list[self.index]
         if level.menu_state == 'title':
             if menu == 'New game':
-                level.__init__()
+                # level.__init__()
+                level.toggle_menu()
             elif menu == 'Continue':
                 if level.has_save:
                     pass

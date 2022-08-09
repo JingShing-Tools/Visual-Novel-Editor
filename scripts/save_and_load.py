@@ -71,3 +71,16 @@ def found_dialogue_or_not(file_name):
     #         return True
     # except:
     #     return False
+
+def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, transform = False, scale=(152, 152)):
+    if img_dict:
+        img_dict.clear()
+        resource_path(folder_path)
+        file_list = os.listdir(folder_path)
+        for file_name in file_list:
+            if '.png' in file_name or '.jpg' in file_name:
+                file_fore_name = file_name.split('.')[0]
+                if transform:
+                    img_dict[file_fore_name] = pygame.transform.scale(pygame.image.load(folder_path + file_name), scale)
+                else:
+                    img_dict[file_fore_name] = pygame.image.load(folder_path + file_name)
