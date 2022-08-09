@@ -36,9 +36,27 @@ commands(all using @ forehead. and p or n can represent player and npcs):
 
 '@bg=bg' -> change background image to certain image.
 
+'@get' -> if you using edit line with this command you can get select line on text box.
+
 '@copy' -> if you using add line with this command you can copy select line to the bottom of select line.
 
-'@bgm=bgm_name'->change bgm to the assets/audio/bgm/bgm_name.mp3
+'@bgm=bgm_name' -> change bgm to the assets/audio/bgm/bgm_name.mp3
+
+'@player=name' -> add a character to player name list. You can use it to create your own character and use it in script.
+
+'@player=clear' -> clear player name list.
+
+'@npc=name' -> add a character to npc name list.
+
+'@npc=clear' -> clear npc name list.
+
+'@end' -> use it in script to tell editor read to where to end reading.
+
+'@sceneX' -> you need to put number in X to tell editor what scene is it.
+
+'@delay=X' -> you need to put X a number to tell editor what conversation delay should be. Default is 10.
+
+':@' -> if you want to print '@' in dialogue just add ':' in line.
 
 ```
 ver 0.2
