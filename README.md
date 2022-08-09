@@ -112,4 +112,13 @@ you need to use '@name.img=p' to change img.
 add flag feature. You can now write all scene in one script.
 You just need to add '@end' to note the end of scene.
 And use '@stage name' to add flag to different stages.
+
+add flag feature. You can now write all scene in one script.
+You just need to add '@end' to note the end of scene.
+And use '@stage name' to add flag to different stages.
+
+add new way to add images. If you want to add a new image for your game.
+Just put image into 'assets/graphics/characters/' or 'assets/graphics/stages/'
+System will automatically sort into dict for you. Now can only differ 'png' and 'png' format.
+it will be like 'image.png' -> dict = {'image' : surface('image.png')}
 ```
