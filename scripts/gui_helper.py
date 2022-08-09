@@ -151,7 +151,8 @@ class Gui_helper:
             # re module split multi diagram. '.' is special character need slash.
             global load_file_name
             load_file_name.set(file_name)
-            lines = load_dialogue(dialogue_path)
+            lines = []
+            load_dialogue(dialogue_path, lines)
             lines_acts_all.clear()
             for line in lines:
                 lines_acts_all.append(line)

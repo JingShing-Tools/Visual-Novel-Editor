@@ -20,8 +20,9 @@ class Game:
         self.level = Level()
         self.level.title_screen()
         self.level.menu_state = 'title'
-        bgm_name = 'light_tune'
-        set_bgm(bgm_name)
+        init_bgm_list()
+        self.bgm_name = bgm_list[0] if len(bgm_list) <= 1 else bgm_list[1]
+        set_bgm(self.bgm_name)
 
     def run(self):
         while self.running:
@@ -38,8 +39,6 @@ class Game:
                     elif event.key == pygame.K_f:
                         self.fullscreen = not(self.fullscreen)
                         self.Full_screen()
-                if event.type == pygame.MOUSEWHEEL:
-                    self.level.visible_sprites.zoom_scale += event.y * 0.03
 
             screen.fill('black')
             self.level.run()
@@ -57,7 +56,7 @@ class Game:
         pygame.quit()
         sys.exit()
 
-need_helper = False
+need_helper = config['need_help']
 if __name__ == '__main__':
     game = Game()
     if need_helper:

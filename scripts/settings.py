@@ -1,6 +1,7 @@
 import os, sys
 import pygame
 from crt_shader import Graphic_engine
+from save_and_load import load_config
 
 pygame.init()
 
@@ -11,6 +12,13 @@ def resource_path(relative):
 	else:
 		absolute_path = os.path.join(relative)
 	return absolute_path
+
+config = {
+	'need_help':True,
+	'title_screen_text':'Crt TV',
+	'dialogue_file_name':'default'
+}
+load_config(config=config)
 
 # game setup
 WIDTH    = 1280
@@ -42,15 +50,29 @@ UPGRADE_BG_COLOR_SELECTED = '#EEEEEE'
 from save_and_load import found_dialogue_or_not, load_dialogue
 # npc dialogue
 # if had dialogue file then read it
-if found_dialogue_or_not('default.txt'):
-    all_lines_en = load_dialogue('dialogues/default.txt')
-else:
-    all_lines_en = ['Just give up.', 'You can\'t go out there.', 'No chance.', 'We just stuck in here.']
+global all_lines_en, all_lines_tch, all_lines_sch
+all_lines_en = []
+all_lines_tch = []
+all_lines_sch = []
+dia_fore_path = 'dialogues/'
+now_dia_file_format = '.txt'
 
-if found_dialogue_or_not('default_tch.txt'):
-    all_lines_tch = load_dialogue('dialogues/default_tch.txt')
-else:
-    all_lines_tch = ['放棄吧。', '你不可能出去的。', '沒有任何可能性。', '我們被困在這了。']
-# npc_lines_sch = ['放弃吧。', '你不可能出去的。', '没有任何可能性。', '我们被困在这了。']
+def change_lines_all_langs(now_dia_file, flag=None):
+	global all_lines_en, all_lines_tch, all_lines_sch
+	if found_dialogue_or_not(now_dia_file + now_dia_file_format):
+		load_dialogue(dia_fore_path+now_dia_file+now_dia_file_format, all_lines_en, flag)
+	else:
+		all_lines_en = ['Just give up.', 'You can\'t go out there.', 'No chance.', 'We just stuck in here.']
 
+	if found_dialogue_or_not(now_dia_file + '_tch' + now_dia_file_format):
+		load_dialogue(dia_fore_path + now_dia_file + '_tch' + now_dia_file_format, all_lines_tch, flag)
+	else:
+		all_lines_tch = ['放棄吧。', '你不可能出去的。', '沒有任何可能性。', '我們被困在這了。']
+
+	if found_dialogue_or_not(now_dia_file + '_sch' + now_dia_file_format):
+		load_dialogue(dia_fore_path + now_dia_file + '_sch' + now_dia_file_format, all_lines_sch, flag)
+	else:
+		all_lines_sch = ['放弃吧。', '你不可能出去的。', '没有任何可能性。', '我们被困在这了。']
+
+change_lines_all_langs(config['dialogue_file_name'])
 lines_acts_all = all_lines_en.copy()

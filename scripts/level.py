@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from menu import Menu
 from dialog import Dialog_box
-from save_and_load import found_save_or_not, found_asset_imgs
+from save_and_load import found_asset_imgs, found_max_scene
 from music_player import bgm_pause, set_bgm
 
 class Level:
@@ -45,11 +45,11 @@ class Level:
         }
         found_asset_imgs(folder_path='assets/graphics/stages/', img_dict=self.bg_img)
         self.change_bg('bg')
-        self.scene = 'bg2'
+        self.scene = 'bg'
 
         # save
+        self.max_scene = found_max_scene('dialogues/'+ config['dialogue_file_name'] +'.txt')
         self.has_save = False
-        found_save_or_not(self)
 
         # user interface
         self.menu_state = 'none'
@@ -60,8 +60,9 @@ class Level:
     def change_bg(self, bg_name=None):
         if bg_name==None:
             bg_name = self.scene
-        self.bg = self.bg_img[bg_name]
+        self.bg = pygame.transform.scale(self.bg_img[bg_name].copy(), REAL_RES)
         self.bg_rect = self.bg.get_rect(topleft = (0, 0))
+        screen.blit(self.bg, self.bg_rect)
 
     def toggle_menu(self):
         self.game_paused = not(self.game_paused)
@@ -122,10 +123,12 @@ class Level:
                 self.dialog.show_textbox = True
                 self.dialog.typing = True
                 if self.dialogue_done_times == 0:
-                    self.scene='bg2'
-                elif self.dialogue_done_times == 1:
-                    self.change_line_script('default', '@stage2')
-                    self.scene='bg'
+                    # self.scene='bg2'
+                    pass
+                elif self.dialogue_done_times <= self.max_scene:
+                    self.dialog.first_talk=True
+                    self.change_line_script(config['dialogue_file_name'], '@scene' + str(self.dialogue_done_times))
+                    # self.scene='bg'
                 else:
                     self.dialog.show_textbox = False
                     self.dialog.typing = False
@@ -165,14 +168,14 @@ class Level:
         if using_talk_key:
             if self.line_index < len(self.lines):
                 self.dialog.add_line(self.lines[self.line_index])
-                if '@' in self.lines[self.line_index]:
+                if '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
                     self.next_line_add()
             self.speak_sound.play()
         elif self.line_index < len(self.lines) - 1:
             self.line_index += 1
             self.dialog.add_line(self.lines[self.line_index])
             self.dialog.typing = True
-            if '@' in self.lines[self.line_index]:
+            if '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
                 self.next_line_add()
             self.speak_sound.play()
         elif self.line_index == len(self.lines) - 1:

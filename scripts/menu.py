@@ -8,7 +8,7 @@ class Menu:
         
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         # self.button_names = ['New game', 'Continue', 'option', 'Exit', 'save', 'load']
-        self.button_names = ['New game','Exit']
+        self.button_names = ['New game', 'Continue','Exit']
         self.button_nums = len(self.button_names)
         self.level = level
         self.bg = level.bg_img['bg2']
@@ -16,8 +16,8 @@ class Menu:
         
         # menu title names setup
         self.menu_font = pygame.font.Font(UI_FONT, UI_FONT_SIZE * 3)
-        self.menu_state = ['title', 'menu', 'dead_screen']
-        self.title_names = ['CRT TV', 'Menu', 'You died']
+        self.menu_state = ['title', 'menu']
+        self.title_names = [config['title_screen_text'], 'Menu']
         self.menu_index = 0
         self.menu_color = TEXT_COLOR_SELECTED
         self.full_width = screen.get_size()[0]
@@ -55,6 +55,9 @@ class Menu:
                 self.can_move = False
                 self.selection_time = pygame.time.get_ticks()
                 self.button_list[self.selection_index].trigger(self.level)
+                # to keep not over press
+                self.level.can_press_key=False
+                self.level.press_key_time=pygame.time.get_ticks()
             
     def selection_cooldown(self):
         if not(self.can_move):
@@ -99,10 +102,6 @@ class Menu:
             self.bg_color = (255, 255, 255)
             self.alpha = 128
             self.menu_index = 1
-        elif self.level.menu_state == 'dead_screen':
-            self.bg_color = (255, 0, 0)
-            self.alpha = 128
-            self.menu_index = 2
 
         # blit bg
         screen.blit(self.bg, self.bg_rect)
@@ -151,7 +150,7 @@ class Button:
                 if level.has_save:
                     pass
                 else:
-                    level.__init__()
+                    level.toggle_menu()
             elif menu == 'Exit':
                 save_file(level)
                 pygame.quit()
@@ -161,14 +160,6 @@ class Button:
                 level.__init__()
             elif menu == 'Continue':
                 level.title_screen()
-            elif menu == 'Exit':
-                pygame.quit()
-                sys.exit()
-        elif level.menu_state == 'dead_screen':
-            if menu == 'New game':
-                level.__init__()
-            elif menu == 'Continue':
-                level.player_dead()
             elif menu == 'Exit':
                 pygame.quit()
                 sys.exit()

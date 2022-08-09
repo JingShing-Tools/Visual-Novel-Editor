@@ -1,5 +1,12 @@
-import json
+import json, re
 from settings import *
+
+def resource_path(relative):
+	if hasattr(sys, "_MEIPASS"):
+		absolute_path = os.path.join(sys._MEIPASS, relative)
+	else:
+		absolute_path = os.path.join(relative)
+	return absolute_path
 
 def save_file(level):
     with open('save_file.txt', 'w') as save_file:
@@ -54,6 +61,22 @@ def load_dialogue(path, lines, start_line = None):
                     else:
                         lines.append(line)
 
+def load_config(path='dialogues\config.txt', config=None):
+    if config:
+        with open(resource_path(path), encoding='UTF-8') as file:
+            while(1):
+                line = file.readline()
+                if not(line):break
+                if '=' in line:
+                    line = line.replace('\n', '')
+                    sets = re.split('=| ',  line)
+                    stat = sets[0]
+                    value = sets[-1]
+                    if stat == 'need_help':
+                        if value == 'True':
+                            value = True
+                        else:value = False
+                    config[stat] = value
 
 def found_save_or_not(level):
     # check if save_file.txt exist
@@ -75,7 +98,7 @@ def found_dialogue_or_not(file_name):
 def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, transform = False, scale=(152, 152)):
     if img_dict:
         img_dict.clear()
-        resource_path(folder_path)
+        folder_path = resource_path(folder_path)
         file_list = os.listdir(folder_path)
         for file_name in file_list:
             if '.png' in file_name or '.jpg' in file_name:
@@ -84,3 +107,29 @@ def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, t
                     img_dict[file_fore_name] = pygame.transform.scale(pygame.image.load(folder_path + file_name), scale)
                 else:
                     img_dict[file_fore_name] = pygame.image.load(folder_path + file_name)
+
+def found_max_scene(file_path):
+    if os.path.exists(resource_path(file_path)):
+        max_scene = 0
+        with open(resource_path(file_path), encoding='UTF-8') as file:
+            while(1):
+                line = file.readline()
+                if not(line):break
+                else:
+                    if '@scene' in line:
+                        scene_num = line.replace('@scene', '')
+                        if int(scene_num) > max_scene : max_scene = int(scene_num)
+            return max_scene
+    else:
+        return 0
+
+def found_all_bgm(folder_path = 'assets/audio/bgm/', bgm_list = None):
+    if bgm_list:
+        bgm_list.clear()
+        bgm_list.append('none')
+        folder_path = resource_path(folder_path)
+        file_list = os.listdir(folder_path)
+        for file_name in file_list:
+            if '.mp3' in file_name:
+                file_name = file_name.split('.')[0]
+                bgm_list.append(file_name)
