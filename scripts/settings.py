@@ -12,21 +12,28 @@ def resource_path(relative):
 config = {
 	'need_help':True,
 	'title_screen_text':'Crt TV',
-	'window_capton':'still_loading',
+	'window_caption':'still_loading',
 	'dialogue_file_name':'default',
 	'shader_default':1,
 	'default_lang':'english',
+	'ending':'Nothing here',
+	'resolution':(800, 600),
+	'window_size':(1280, 720),
+	'allow_img_format':['png', 'jpg', 'bmp'],
+	'text_frame_alpha':200,
+	'text_frame_color':(255,255,255),
 }
 load_config(config=config)
+print(config)
 
 # game setup
-WIDTH    = 1280
-HEIGHT   = 720
-VIRTUAL_RES = (800, 600)
-REAL_RES = (WIDTH, HEIGHT)
+WIDTH    = config['window_size'][0]
+HEIGHT   = config['window_size'][1]
+VIRTUAL_RES = config['resolution']
+REAL_RES = config['window_size']
 screen = pygame.Surface(VIRTUAL_RES).convert((255, 65280, 16711680, 0))
 pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
-crt_shader = Graphic_engine(screen, config['shader_default'])
+crt_shader = Graphic_engine(screen, config['shader_default'], VIRTUAL_RES)
 FPS      = 60
 
 # ui

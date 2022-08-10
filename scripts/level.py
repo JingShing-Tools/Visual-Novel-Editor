@@ -46,7 +46,7 @@ class Level:
             'bg':pygame.image.load(resource_path('assets/graphics/stages/bg.png')).convert(),
             # 'bg2':pygame.image.load(resource_path('assets/graphics/stages/bg2.png')).convert(),
         }
-        found_asset_imgs(folder_path='assets/graphics/stages/', img_dict=self.bg_img)
+        found_asset_imgs(folder_path='assets/graphics/stages/', img_dict=self.bg_img, allow_img_format=config['allow_img_format'])
         self.change_bg('bg')
         self.scene = 'bg'
 
@@ -122,7 +122,7 @@ class Level:
         if self.can_press_key:
             self.dialog.blit_press_hint()
             if keys[pygame.K_t]:
-                # self.dialog.refresh_lines()
+                self.dialog.refresh_lines()
                 # this will clear text box
                 self.dialog.show_textbox = True
                 self.dialog.typing = True
@@ -137,9 +137,9 @@ class Level:
                     self.dialog.show_textbox = False
                     self.dialog.typing = False
                     self.dialog.ending = True
-                    set_bgm('GlassTemple', True)
                     lines_acts_all.clear()
-                    self.scene='bg2'
+                    # set_bgm('GlassTemple', True)
+                    # self.scene='bg2'
                 if self.dialogue_done_times != 0:
                     self.language_change()
                 self.change_bg()

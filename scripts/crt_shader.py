@@ -5,12 +5,10 @@ from pygame.locals import *
 import moderngl
 
 def resource_path(relative):
-    return relative
-
-VIRTUAL_RES=(800, 600)
+	return relative
 
 class Graphic_engine:
-    def __init__(self, screen, style = 1):
+    def __init__(self, screen, style = 1, VIRTUAL_RES=(800, 600)):
         pygame.init()
         self.screen = screen
         self.ctx = moderngl.create_context()

@@ -23,7 +23,7 @@ class Dialog_box:
             # 'player': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/player.png')), (152, 152)),
             # 'npc' : pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/npc.png')), (152, 152)),
         }
-        found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=self.talker_image_or, transform=True)
+        found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=self.talker_image_or, transform=True, allow_img_format=config['allow_img_format'])
         # talker icon
         self.talker_img_name = {
             'Unknown':'none',
@@ -42,7 +42,10 @@ class Dialog_box:
         self.multi_label = []
         self.multiline_max_line = 4
         self.line_internal = 35
-        self.text_frame_color = (255, 255, 255, 200)
+        self.text_frame_alpha = config['text_frame_alpha']
+        self.text_frame_color_value = config['text_frame_color']
+        self.text_frame_color = (self.text_frame_color_value[0], self.text_frame_color_value[1], self.text_frame_color_value[2], self.text_frame_alpha)
+        # self.text_frame_color = (255, 255, 255, 0)
         # self.text_frame_color = (255, 255, 255, 200)
 
         self.show_textbox = False
@@ -62,11 +65,9 @@ class Dialog_box:
         }
         self.talker_type = 'none'
         self.talker_name = 'Unknown'
-        self.prev_talker_name= None
-        self.first_talk = True
         self.talker_name_surf = self.font.render(self.talker_name, False, TEXT_COLOR)
         self.talker_name_rect = self.talker_name_surf.get_rect()
-        self.talker_name_frame_extend = (10, 0)
+        self.talker_name_frame_extend = (10, 10)
 
     def gradual_typing(self):
         # test change bg
@@ -106,11 +107,24 @@ class Dialog_box:
                         elif '.color' in talker:
                             color_name = info_act[-1]
                             talker = talker.split('.')[0]
-                            if talker == 'p':
-                                talker = 'player'
-                            elif talker == 'n':
-                                talker = 'npc'
-                            self.text_color_dict[talker] = color_name
+                            if talker == 'textbox':
+                                self.text_frame_color_value = list(map(int, color_name.split(',')))
+                                # self.text_frame_color_value[0] = color_name.split(',')[0]
+                                # self.text_frame_color_value[1] = color_name.split(',')[1]
+                                # self.text_frame_color_value[2] = color_name.split(',')[2]
+                                self.text_frame_color = (self.text_frame_color_value[0], self.text_frame_color_value[1], self.text_frame_color_value[2], self.text_frame_alpha)
+                            else:
+                                if talker == 'p':
+                                    talker = 'player'
+                                elif talker == 'n':
+                                    talker = 'npc'
+                                self.text_color_dict[talker] = color_name
+                        elif '.alpha' in talker:
+                            alpha_value = int(info_act[-1])
+                            object = talker.split('.')[0]
+                            if object == 'textbox':
+                                self.text_frame_alpha = alpha_value
+                                self.text_frame_color = (self.text_frame_color_value[0], self.text_frame_color_value[1], self.text_frame_color_value[2], self.text_frame_alpha)
                         elif 'bgm' in talker:
                             bgm_name = info_act[-1]
                             set_bgm(bgm_name, True)
@@ -129,18 +143,23 @@ class Dialog_box:
                                 else:
                                     if not(character_name in self.npcs_list):
                                         self.npcs_list.append(character_name)
-                                        self.text_color_dict['character_name']='red'
+                                        self.text_color_dict[character_name]='black'
                             elif talker == 'player' or talker == 'p':
                                 if character_name == 'clear':
                                     self.player_list.clear()
                                 else:
                                     if not(character_name in self.player_list):
                                         self.player_list.append(character_name)
-                                        self.text_color_dict['character_name']='red'
+                                        self.text_color_dict[character_name]='red'
                             if not(character_name in self.talker_img_name):
                                 self.talker_img_name[character_name] = 'none'
 
-                    self.multiline[line_id]='@'
+                    if 'refresh' in lines:
+                        self.multiline[line_id]='@'
+                        self.refresh_lines(3)
+                    else:
+                        self.multiline[line_id]='@'
+
                 else:
                     if ':' in lines:
                         talker_and_line = lines.split(':')
@@ -176,21 +195,10 @@ class Dialog_box:
                     if self.talker_name in self.talker_img_name:
                         self.talker_image = self.talker_image_or[self.talker_img_name[self.talker_name]].copy()
                         # if switch chracter talk refresh text
-                        if self.prev_talker_name != self.talker_name:
-                            if self.first_talk:
-                                self.first_talk = False
-                            else:
-                                self.refresh_lines(2)
-                        self.prev_talker_name=self.talker_name
+
                     else:
                         self.talker_image = self.talker_image_or[self.talker_img_name[self.talker_type]].copy()
                         # if switch chracter talk refresh text
-                        if self.prev_talker_name != self.talker_type:
-                            if self.first_talk:
-                                self.first_talk = False
-                            else:
-                                self.refresh_lines(2)
-                        self.prev_talker_name=self.talker_type
 
                     if line_num > 1 and line_id < line_num - 1:
                         row_text = self.font.render(lines, 1, self.text_color_dict[self.talker_name])
@@ -204,6 +212,10 @@ class Dialog_box:
                             pygame.event.clear()
 
                             rendering = rendering + char
+                            if self.talker_name in self.text_color_dict:
+                                pass
+                            else:
+                                self.text_color_dict[self.talker_name] = 'black'
                             rendered_text = self.font.render(rendering, 1, self.text_color_dict[self.talker_name])
 
                             self.multi_label[-1] = rendered_text
@@ -235,15 +247,27 @@ class Dialog_box:
             self.refresh_lines()
             self.multiline.append(self.text)
 
+    def find_prev_line(self, lines, line_id):
+        if line_id < 0 and line_id*-1 > len(lines):
+            return
+        else:
+            return lines[line_id]
     def refresh_lines(self, mode=1):
         if mode == 1:
             self.multiline.clear()
             self.multi_label.clear()
         elif mode == 2:
+            self.multi_label.clear()
+        elif mode == 3:
+            line_id = -1
             last_line = self.multiline[-1]
+            while ('@' in last_line and not':' in last_line):
+                last_line = self.find_prev_line(self.multiline, line_id-1)
             self.multiline.clear()
             self.multi_label.clear()
-            self.multiline.append(last_line)
+            if last_line:
+                self.multiline.append(last_line)
+                self.gradual_typing()
 
     def result_print(self):
         pygame.draw.rect(self.textbox_surf, "black", self.border_rect, 6)
@@ -264,7 +288,7 @@ class Dialog_box:
         thickness = 2
         text = "press 'T' to talk" if (len(self.multiline) == 0 or not(self.show_textbox)) else "press 'enter' to continue"
         if self.ending:
-            text = 'No hope. Just leave.'
+            text = config['ending']
         outline_color = 'black'
         fill_color = 'white'
         self.blit_text_with_outline(x, y, text, thickness, outline_color, fill_color)

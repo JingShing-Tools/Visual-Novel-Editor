@@ -57,24 +57,34 @@ def load_dialogue(path, lines, start_line = None):
                     else:
                         lines.append(line)
 
+import os
 def load_config(path='dialogues\config.txt', config=None):
     if config:
-        with open(resource_path(path), encoding='UTF-8') as file:
-            while(1):
-                line = file.readline()
-                if not(line):break
-                if '=' in line:
-                    line = line.replace('\n', '')
-                    sets = re.split('=| ',  line)
-                    stat = sets[0]
-                    value = sets[-1]
-                    if stat == 'need_help':
-                        if value == 'True':
-                            value = True
-                        else:value = False
-                    elif stat == 'shader_default':
-                        value = int(value)
-                    config[stat] = value
+        if os.path.exists(path):
+            with open(resource_path(path), encoding='UTF-8') as file:
+                while(1):
+                    line = file.readline()
+                    if not(line):break
+                    if '=' in line:
+                        line = line.replace('\n', '')
+                        # sets = re.split('=| ',  line)
+                        sets = line.split('=')
+                        stat = sets[0]
+                        value = sets[-1]
+                        if stat == 'need_help':
+                            if value == 'True':
+                                value = True
+                            else:value = False
+                        elif stat == 'shader_default' or stat == 'text_frame_alpha':
+                            value = int(value)
+                        elif stat == 'text_frame_color':
+                            value = value.split(',')
+                            value = list(map(int, value))
+                        elif stat == 'resolution' or stat == 'window_size':
+                            value = eval(value)
+                        elif stat == 'allow_img_format':
+                            value = value.split(',')
+                        config[stat] = value
 
 def found_save_or_not(level):
     # check if save_file.txt exist
@@ -84,7 +94,6 @@ def found_save_or_not(level):
     except:
         level.has_save = False
 
-import os
 def found_dialogue_or_not(file_name):
     return os.path.exists(resource_path('dialogues/' + file_name))
     # try:
@@ -93,13 +102,14 @@ def found_dialogue_or_not(file_name):
     # except:
     #     return False
 
-def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, transform = False, scale=(152, 152)):
+def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, transform = False, scale=(152, 152), allow_img_format = ['png', 'jpg', 'bmp']):
     if img_dict:
         img_dict.clear()
         folder_path = resource_path(folder_path)
         file_list = os.listdir(folder_path)
         for file_name in file_list:
-            if '.png' in file_name or '.jpg' in file_name:
+            file_format = file_name.split('.')[-1]
+            if file_format in allow_img_format:
                 file_fore_name = file_name.split('.')[0]
                 if transform:
                     img_dict[file_fore_name] = pygame.transform.scale(pygame.image.load(folder_path + file_name), scale)

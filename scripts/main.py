@@ -35,7 +35,7 @@ class Game:
                     elif event.key == pygame.K_ESCAPE:
                         self.level.title_screen()
                     elif event.key == pygame.K_0:
-                        crt_shader.__init__(crt_shader.screen, (crt_shader.style + 1) % 3)
+                        crt_shader.__init__(crt_shader.screen, (crt_shader.style + 1) % 3, VIRTUAL_RES)
                     elif event.key == pygame.K_f:
                         self.fullscreen = not(self.fullscreen)
                         self.Full_screen()
