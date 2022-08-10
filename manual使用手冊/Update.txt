@@ -1,0 +1,45 @@
+ver 0.7:
+add config file can modify game title text, hidden editor and change
+default dialogue script name.
+更新設定檔，可以更改遊戲標題文字、隱藏編輯器和更改預設導入腳本名稱。
+
+add command '@name.color=color' to change chracter text color
+now has green, red, blue, white and black
+
+ver 0.8
+now switching character will refresh text page.
+
+add config system:
+need_help=True
+// open window or not
+title_screen_text=Game
+// set game title
+window_caption=Still_loading:
+// set game caption
+dialogue_file_name=default
+// default dialogue file name
+shader_default=2
+// shader default: 0, no shader. 1 crt shader. 2 scanline.
+default_lang=english
+// now has english, schinese, tchinese
+ending=Nothing there
+// ending line
+
+ver 0.9
+add resolution and window size in config
+add text frame alpha in config
+remove switching character refresh text box
+
+add new command '@refresh' to refresh textbox
+
+add '@textbox.alpha=X' command to change alpha value of textbox
+add '@textbox.color=X,X,X' command to change color
+
+add new mode of '@color' command you can use color name or rgb value
+
+add attribute to config:
+resolution=800,600
+window_size=800,600
+allow_img_format=png,jpg,bmp
+text_frame_alpha=255
+text_frame_color=255,255,255

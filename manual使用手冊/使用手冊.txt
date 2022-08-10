@@ -1,0 +1,45 @@
+你可以在這看到更詳細的手冊：
+https://github.com/JingShing/Visual-Novel-Editor/blob/main/README.md
+
+按 'T' 對話。
+
+按 'Y' 翻譯
+
+按 'enter' 繼續對話。
+
+按 'F' 全螢幕。
+
+按 '0' 更改濾鏡 -> 現在有 crt 電視濾鏡, 掃描線 和 無濾鏡.
+
+
+指令集(需要'@'作為前綴使用)：
+
+如果使用 edit line 時文字框沒有文字。則有特殊效果。
+如果選了特定對話，則可刪除對話；如果沒選對話，則能刷新編輯區的對話列表。
+
+'@p.img=n' -> 將玩家圖像更改成npc的。
+
+'@bg=bg_name' -> 將背景圖片更改成文件夾中的 bg_name.png
+
+'@get' -> 如果輸入這個指令，按 edit line 可以得到目前選取對話的文字。
+
+'@copy' -> 如果輸入這個指令，按 add line 可以將指定行複製到下一行。
+
+'@bgm=bgm_name' -> 將BGM更改成 assets/audio/bgm/bgm_name.mp3
+
+'@player=name' -> 增加一個角色名到玩家名列表。
+p.s. 你可能需要用 '@name.img=p' 來給予圖片
+
+'@player=clear' -> 清空玩家名列表。
+
+'@npc=name' -> 增加一個角色名到NPC名列表。
+p.s. 你可能需要用 '@name.img=n' 來給予圖片
+
+'@npc=clear' -> 清空NPC名列表。
+
+'@end' -> 寫作用，放於段落後，告訴編輯器要讀到哪。
+
+'@sceneX' -> 寫作用，放於段落前，讓編輯器定位。
+
+'@delay=X' -> 更改對話的間隔，預設是35。
+不過中文字比英文少，所以會感覺比較快。
