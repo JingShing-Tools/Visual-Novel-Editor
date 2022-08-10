@@ -189,4 +189,6 @@ shader_default=2
 // shader default: 0, no shader. 1 crt shader. 2 scanline.
 default_lang=english
 // now has english, schinese, tchinese
+ending=to be continue
+// ending line
 ```
