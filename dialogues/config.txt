@@ -1,3 +1,12 @@
 need_help=True
+// open window or not
 title_screen_text=Game
+// set game title
+window_caption=Still_loading:
+// set game caption
 dialogue_file_name=default
+// default dialogue file name
+shader_default=2
+// shader default: 0, no shader. 1 crt shader. 2 scanline.
+default_lang=tchinese
+// now has english, schinese, tchinese
