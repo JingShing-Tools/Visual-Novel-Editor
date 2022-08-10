@@ -172,4 +172,21 @@ same as
 n:text
 n:text
 n:text
+
+ver 0.8
+now switching character will refresh text page.
+
+add config system:
+need_help=True
+// open window or not
+title_screen_text=Game
+// set game title
+window_caption=Still_loading:
+// set game caption
+dialogue_file_name=default
+// default dialogue file name
+shader_default=2
+// shader default: 0, no shader. 1 crt shader. 2 scanline.
+default_lang=english
+// now has english, schinese, tchinese
 ```
