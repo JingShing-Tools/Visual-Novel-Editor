@@ -191,4 +191,30 @@ default_lang=english
 // now has english, schinese, tchinese
 ending=to be continue
 // ending line
+
+
+ver 0.9
+add resolution and window size in config
+add text frame alpha in config
+remove switching character refresh text box
+
+add new command '@refresh' to refresh textbox
+
+add '@textbox.alpha=X' command to change alpha value of textbox
+add '@textbox.color=X,X,X' command to change color
+
+add new mode of '@color' command you can use color name or rgb value
+
+add attribute to config:
+resolution=800,600
+window_size=800,600
+allow_img_format=png,jpg,bmp
+text_frame_alpha=255
+text_frame_color=255,255,255
+
+ver 0.91
+fixed '@refresh' command bug
+
+ver 0.92
+now can use shift to speed coversation
 ```
