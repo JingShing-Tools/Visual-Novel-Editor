@@ -2,11 +2,7 @@ import json, re
 from settings import *
 
 def resource_path(relative):
-	if hasattr(sys, "_MEIPASS"):
-		absolute_path = os.path.join(sys._MEIPASS, relative)
-	else:
-		absolute_path = os.path.join(relative)
-	return absolute_path
+	return relative
 
 def save_file(level):
     with open('save_file.txt', 'w') as save_file:
@@ -76,6 +72,8 @@ def load_config(path='dialogues\config.txt', config=None):
                         if value == 'True':
                             value = True
                         else:value = False
+                    elif stat == 'shader_default':
+                        value = int(value)
                     config[stat] = value
 
 def found_save_or_not(level):

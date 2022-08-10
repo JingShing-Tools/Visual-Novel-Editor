@@ -44,7 +44,7 @@ class Game:
             self.level.run()
             crt_shader()
             self.clock.tick(FPS)
-            pygame.display.set_caption('In no mood' + ' ' + str(round(self.clock.get_fps())))
+            pygame.display.set_caption(config['window_caption'] + ' ' + str(round(self.clock.get_fps())))
     
     def Full_screen(self):
         if not(self.fullscreen):

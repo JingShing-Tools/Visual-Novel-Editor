@@ -7,16 +7,15 @@ pygame.init()
 
 # for packing game
 def resource_path(relative):
-	if hasattr(sys, "_MEIPASS"):
-		absolute_path = os.path.join(sys._MEIPASS, relative)
-	else:
-		absolute_path = os.path.join(relative)
-	return absolute_path
+	return relative
 
 config = {
 	'need_help':True,
 	'title_screen_text':'Crt TV',
-	'dialogue_file_name':'default'
+	'window_capton':'still_loading',
+	'dialogue_file_name':'default',
+	'shader_default':1,
+	'default_lang':'english',
 }
 load_config(config=config)
 
@@ -27,7 +26,7 @@ VIRTUAL_RES = (800, 600)
 REAL_RES = (WIDTH, HEIGHT)
 screen = pygame.Surface(VIRTUAL_RES).convert((255, 65280, 16711680, 0))
 pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
-crt_shader = Graphic_engine(screen)
+crt_shader = Graphic_engine(screen, config['shader_default'])
 FPS      = 60
 
 # ui
@@ -75,4 +74,11 @@ def change_lines_all_langs(now_dia_file, flag=None):
 		all_lines_sch = ['放弃吧。', '你不可能出去的。', '没有任何可能性。', '我们被困在这了。']
 
 change_lines_all_langs(config['dialogue_file_name'])
-lines_acts_all = all_lines_en.copy()
+if config['default_lang'] == 'english':
+	lines_acts_all = all_lines_en.copy()
+elif config['default_lang'] == 'schinese':
+	lines_acts_all = all_lines_sch.copy()
+elif config['default_lang'] == 'tchinese':
+	lines_acts_all = all_lines_tch.copy()
+else:
+	lines_acts_all = all_lines_en.copy()

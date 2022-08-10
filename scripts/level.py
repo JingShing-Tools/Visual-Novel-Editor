@@ -25,9 +25,12 @@ class Level:
         # record how many times dialogue done
         self.dialogue_done_times = 0
         self.line_index = 0
-        self.language = 'english'
         # self.languages = ['english', 'tchinese']
         self.languages = ['english', 'tchinese', 'schinese']
+        if config['default_lang'] in self.languages:
+            self.language = config['default_lang']
+        else:
+            self.languages = 'english'
         self.language_index = 0
         self.lines = lines_acts_all
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
@@ -119,7 +122,8 @@ class Level:
         if self.can_press_key:
             self.dialog.blit_press_hint()
             if keys[pygame.K_t]:
-                self.dialog.refresh_lines()
+                # self.dialog.refresh_lines()
+                # this will clear text box
                 self.dialog.show_textbox = True
                 self.dialog.typing = True
                 if self.dialogue_done_times == 0:

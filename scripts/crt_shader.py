@@ -5,11 +5,7 @@ from pygame.locals import *
 import moderngl
 
 def resource_path(relative):
-	if hasattr(sys, "_MEIPASS"):
-		absolute_path = os.path.join(sys._MEIPASS, relative)
-	else:
-		absolute_path = os.path.join(relative)
-	return absolute_path
+    return relative
 
 VIRTUAL_RES=(800, 600)
 
