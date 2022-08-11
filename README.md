@@ -220,4 +220,5 @@ now can use shift to speed coversation
 fixed textbox alpha range problem
 add '@jump tag' command
 you need to use '@tag' first
+press 'U' to switch cpu render or gpu render
 ```
