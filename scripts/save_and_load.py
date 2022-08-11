@@ -2,7 +2,11 @@ import json, re
 from settings import *
 
 def resource_path(relative):
-	return relative
+	if hasattr(sys, "_MEIPASS"):
+		absolute_path = os.path.join(sys._MEIPASS, relative)
+	else:
+		absolute_path = os.path.join(relative)
+	return absolute_path
 
 def save_file(level):
     with open('save_file.txt', 'w') as save_file:
@@ -65,13 +69,15 @@ def load_config(path='dialogues\config.txt', config=None):
                 while(1):
                     line = file.readline()
                     if not(line):break
-                    if '=' in line:
+                    if '#' in line:
+                        pass
+                    elif '=' in line:
                         line = line.replace('\n', '')
                         # sets = re.split('=| ',  line)
                         sets = line.split('=')
                         stat = sets[0]
                         value = sets[-1]
-                        if stat == 'need_help':
+                        if stat == 'need_help' or stat == 'only_cpu':
                             if value == 'True':
                                 value = True
                             else:value = False
@@ -96,11 +102,6 @@ def found_save_or_not(level):
 
 def found_dialogue_or_not(file_name):
     return os.path.exists(resource_path('dialogues/' + file_name))
-    # try:
-    #     with open(resource_path('dialogues/' + file_name)) as save_file:
-    #         return True
-    # except:
-    #     return False
 
 def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, transform = False, scale=(152, 152), allow_img_format = ['png', 'jpg', 'bmp']):
     if img_dict:

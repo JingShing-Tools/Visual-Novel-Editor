@@ -7,7 +7,11 @@ pygame.init()
 
 # for packing game
 def resource_path(relative):
-	return relative
+	if hasattr(sys, "_MEIPASS"):
+		absolute_path = os.path.join(sys._MEIPASS, relative)
+	else:
+		absolute_path = os.path.join(relative)
+	return absolute_path
 
 config = {
 	'need_help':True,
@@ -22,19 +26,23 @@ config = {
 	'allow_img_format':['png', 'jpg', 'bmp'],
 	'text_frame_alpha':200,
 	'text_frame_color':(255,255,255),
+	'title_cover_img':'bg2',
+	'only_cpu':False,
 }
 load_config(config=config)
-print(config)
 
 # game setup
-WIDTH    = config['window_size'][0]
-HEIGHT   = config['window_size'][1]
+WIDTH    = config['resolution'][0]
+HEIGHT   = config['resolution'][1]
 VIRTUAL_RES = config['resolution']
 REAL_RES = config['window_size']
+FPS = 60
+if config['only_cpu']:
+	pygame.display.set_mode(VIRTUAL_RES)
+else:
+	pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
 screen = pygame.Surface(VIRTUAL_RES).convert((255, 65280, 16711680, 0))
-pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
-crt_shader = Graphic_engine(screen, config['shader_default'], VIRTUAL_RES)
-FPS      = 60
+crt_shader = Graphic_engine(screen, config['shader_default'], VIRTUAL_RES, cpu_only=config['only_cpu'])
 
 # ui
 BAR_HEIGHT = 20

@@ -39,6 +39,14 @@ class Game:
                     elif event.key == pygame.K_f:
                         self.fullscreen = not(self.fullscreen)
                         self.Full_screen()
+                    elif event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
+                        self.level.dialog.scrolling_text_time=5
+                    elif event.key == pygame.K_u:
+                        self.cpu_gpu_switch()
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
+                        self.level.dialog.scrolling_text_time=self.level.dialog.or_delay
+
 
             screen.fill('black')
             self.level.run()
@@ -47,10 +55,21 @@ class Game:
             pygame.display.set_caption(config['window_caption'] + ' ' + str(round(self.clock.get_fps())))
     
     def Full_screen(self):
-        if not(self.fullscreen):
-            pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
+        if not(config['only_cpu']):
+            if not(self.fullscreen):
+                pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
+            else:
+                pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL|pygame.FULLSCREEN)
         else:
-            pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL|pygame.FULLSCREEN)
+            if not(self.fullscreen):
+                pygame.display.set_mode(VIRTUAL_RES)
+            else:
+                pygame.display.set_mode(VIRTUAL_RES, pygame.FULLSCREEN)
+
+    def cpu_gpu_switch(self):
+        config['only_cpu'] = not(config['only_cpu'])
+        self.Full_screen()
+        crt_shader.__init__(crt_shader.screen,VIRTUAL_RES=VIRTUAL_RES, cpu_only=config['only_cpu'])
 
     def quit_game(self):
         pygame.quit()

@@ -13,25 +13,29 @@ class Dialog_box:
 
         # self.font = pygame.font.SysFont('youyuan', 25)
         self.font = pygame.font.Font(dialogue_font, 25)
-        self.textbox_surf = pygame.Surface((700,200), pygame.SRCALPHA)
-        # self.textbox_rect = self.textbox_surf.get_rect(topleft=(150,200))
+        # textbox_size = (700,200)
+        textbox_size = (WIDTH/1.2,HEIGHT/3)
+        self.textbox_surf = pygame.Surface(textbox_size, pygame.SRCALPHA)
+        self.textbox_bg_surf = pygame.Surface(textbox_size, pygame.SRCALPHA)
         self.textbox_rect = self.textbox_surf.get_rect(center=(self.screen_width/2, self.screen_height/2 + 30))
+        # self.textbox_bg_rect = self.textbox_rect
         self.border_rect = self.textbox_surf.get_rect(topleft=(0, 0))
 
+        # talker icon
         self.talker_image_or = {
             'none': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/none.png')), (152, 152)),
             # 'player': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/player.png')), (152, 152)),
             # 'npc' : pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/npc.png')), (152, 152)),
         }
-        found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=self.talker_image_or, transform=True, allow_img_format=config['allow_img_format'])
-        # talker icon
+        # auto load imgs
+        found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=self.talker_image_or, transform=True, allow_img_format=config['allow_img_format'],scale=(WIDTH/4, WIDTH/4))
+        print(self.talker_image_or)
         self.talker_img_name = {
             'Unknown':'none',
             'player': 'player',
             'npc' : 'npc',
             }
         self.talker_image = self.talker_image_or['none'].copy()
-        # self.talker_image_rect = self.talker_image.get_rect(bottomright = self.textbox_rect.topright)
         self.talker_image_rect = self.talker_image.get_rect(bottomleft = self.textbox_rect.topleft)
 
         # line progress
@@ -50,7 +54,8 @@ class Dialog_box:
 
         self.show_textbox = False
         self.typing = False
-        self.scrolling_text_time = 35
+        self.or_delay = 35
+        self.scrolling_text_time = self.or_delay
 
         self.ending = False
         # self.bg_color = 'white'
@@ -70,20 +75,17 @@ class Dialog_box:
         self.talker_name_frame_extend = (10, 10)
 
     def gradual_typing(self):
-        # test change bg
-        # self.level.change_bg('bg')
-
-        # dialog box bg
-        # screen.blit(self.textbox_surf, self.textbox_rect)
         if self.typing:
+            # print(self.multiline)
             line_num = len(self.multiline)
             self.multi_label.clear()
             rendering = ''
             # self.multi_label.clear()
             for line_id, lines in enumerate(self.multiline):
                 # print(str(line_id) + ' ' + str(line_num) + ' ' + lines)
-                self.textbox_surf.fill(self.text_frame_color)
-                pygame.draw.rect(self.textbox_surf, "black", self.border_rect, 6)
+                self.textbox_surf.fill(color=(0,0,0,0))
+                self.textbox_bg_surf.fill(self.text_frame_color)
+                pygame.draw.rect(self.textbox_bg_surf, "black", self.border_rect, 6)
                 if '@' in lines and not(':' in lines):
                     if '=' in lines:
                         info_act = re.split('@|=| ', lines)
@@ -109,9 +111,6 @@ class Dialog_box:
                             talker = talker.split('.')[0]
                             if talker == 'textbox':
                                 self.text_frame_color_value = list(map(int, color_name.split(',')))
-                                # self.text_frame_color_value[0] = color_name.split(',')[0]
-                                # self.text_frame_color_value[1] = color_name.split(',')[1]
-                                # self.text_frame_color_value[2] = color_name.split(',')[2]
                                 self.text_frame_color = (self.text_frame_color_value[0], self.text_frame_color_value[1], self.text_frame_color_value[2], self.text_frame_alpha)
                             else:
                                 if talker == 'p':
@@ -134,7 +133,8 @@ class Dialog_box:
                             self.level.change_bg()
                         elif 'delay' in talker:
                             delay = info_act[-1]
-                            self.scrolling_text_time = int(delay)
+                            self.or_delay = int(delay)
+                            self.scrolling_text_time = self.or_delay
                         elif not('.' in talker):
                             character_name = info_act[-1]
                             if talker == 'npc' or talker == 'n':
@@ -153,8 +153,14 @@ class Dialog_box:
                                         self.text_color_dict[character_name]='red'
                             if not(character_name in self.talker_img_name):
                                 self.talker_img_name[character_name] = 'none'
+                    elif 'jump' in lines:
+                        self.multiline[line_id]='@'
+                        info_act = re.split('@|=| ', lines)
+                        tag = info_act[-1]
+                        self.level.change_line_script(config['dialogue_file_name'], '@' + tag, True)
+                        self.refresh_lines(3)
 
-                    if 'refresh' in lines:
+                    elif 'refresh' in lines:
                         self.multiline[line_id]='@'
                         self.refresh_lines(3)
                     else:
@@ -207,6 +213,7 @@ class Dialog_box:
                     elif line_id == line_num - 1:
                         # gradual type part
                         self.multi_label.append(self.text)
+                        self.blit_textbox_bg()
                         for char in lines:
                             pygame.time.delay(self.scrolling_text_time)
                             pygame.event.clear()
@@ -221,8 +228,9 @@ class Dialog_box:
                             self.multi_label[-1] = rendered_text
                             for line in range(len(self.multi_label)):
                                 self.textbox_surf.blit(self.multi_label[line], (20, 30 + line * self.line_internal))
+                                screen.blit(self.textbox_surf, self.textbox_rect)
                                 crt_shader()
-                            self.result_print()
+                            # self.result_print()
 
         self.typing = False
     
@@ -270,17 +278,15 @@ class Dialog_box:
                 self.gradual_typing()
 
     def result_print(self):
-        pygame.draw.rect(self.textbox_surf, "black", self.border_rect, 6)
+        self.blit_textbox_bg()
         screen.blit(self.textbox_surf, self.textbox_rect)
-        screen.blit(self.talker_image, self.talker_image_rect)
-        self.show_talker_name()
         crt_shader()
 
-    def blit_test(self):
-        textbox_surf = pygame.Surface((700,200), pygame.SRCALPHA)
-        textbox_surf.fill('black')
-        textbox_rect = textbox_surf.get_rect(topleft=(150,200))
-        screen.blit(textbox_surf, textbox_rect)
+    def blit_textbox_bg(self):
+        pygame.draw.rect(self.textbox_bg_surf, "black", self.border_rect, 6)
+        screen.blit(self.textbox_bg_surf, self.textbox_rect)
+        screen.blit(self.talker_image, self.talker_image_rect)
+        self.show_talker_name()
 
     def blit_press_hint(self):
         x = self.screen_width / 2

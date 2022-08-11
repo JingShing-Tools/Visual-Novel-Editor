@@ -9,6 +9,7 @@ class Level:
     def __init__(self):
         # get the display surface
         self.game_paused = False
+        bgm_pause(self.game_paused)
         
         # attack sprites
         self.current_attack = None
@@ -43,7 +44,8 @@ class Level:
         # create stage
         # bgs
         self.bg_img = {
-            'bg':pygame.image.load(resource_path('assets/graphics/stages/bg.png')).convert(),
+            'none': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/none.png')), (152, 152)),
+            # 'bg':pygame.image.load(resource_path('assets/graphics/stages/bg.png')).convert(),
             # 'bg2':pygame.image.load(resource_path('assets/graphics/stages/bg2.png')).convert(),
         }
         found_asset_imgs(folder_path='assets/graphics/stages/', img_dict=self.bg_img, allow_img_format=config['allow_img_format'])
@@ -60,10 +62,14 @@ class Level:
         self.prev_menu_state = 'none'
         self.menu_list = self.menu.button_names
 
-    def change_bg(self, bg_name=None):
+    def change_bg(self, bg_name=None, scale=True):
         if bg_name==None:
             bg_name = self.scene
-        self.bg = pygame.transform.scale(self.bg_img[bg_name].copy(), REAL_RES)
+        # scale bg background
+        if scale:
+            self.bg = pygame.transform.scale(self.bg_img[bg_name].copy(), REAL_RES)
+        else:
+            self.bg = self.bg_img[bg_name].copy()
         self.bg_rect = self.bg.get_rect(topleft = (0, 0))
         screen.blit(self.bg, self.bg_rect)
 
@@ -127,27 +133,20 @@ class Level:
                 self.dialog.show_textbox = True
                 self.dialog.typing = True
                 if self.dialogue_done_times == 0:
-                    # self.scene='bg2'
                     pass
                 elif self.dialogue_done_times <= self.max_scene:
                     self.dialog.first_talk=True
                     self.change_line_script(config['dialogue_file_name'], '@scene' + str(self.dialogue_done_times))
-                    # self.scene='bg'
                 else:
                     self.dialog.show_textbox = False
                     self.dialog.typing = False
                     self.dialog.ending = True
                     lines_acts_all.clear()
-                    # set_bgm('GlassTemple', True)
-                    # self.scene='bg2'
                 if self.dialogue_done_times != 0:
                     self.language_change()
-                self.change_bg()
                 self.press_key_time = pygame.time.get_ticks()
                 self.can_press_key = False
                 if len(self.lines)>0:
-                    # self.dialog.add_line(self.lines[self.line_index])
-                    # self.speak_sound.play()
                     self.next_line_add(True)
             if keys[pygame.K_RETURN]:
                 self.press_key_time = pygame.time.get_ticks()
@@ -161,25 +160,35 @@ class Level:
                 self.language = self.languages[self.language_index]
                 self.language_change()
 
-    def change_line_script(self, script_name, flag=None):
+    def change_line_script(self, script_name, flag=None, jump=False):
+        # if you want to use '@jump' you need to make line_index = -1
         now_dia_file = script_name
         path = dia_fore_path + now_dia_file + now_dia_file_format
         if found_dialogue_or_not(now_dia_file+now_dia_file_format):
             load_dialogue(path,lines_acts_all, flag)
             change_lines_all_langs(now_dia_file, flag)
+            if jump:
+                self.line_index = 0
+                self.dialog.multiline.append(self.lines[self.line_index])
     
     def next_line_add(self, using_talk_key = False):
         if using_talk_key:
             if self.line_index < len(self.lines):
+                if self.line_index < 0:
+                    self.line_index = 0
                 self.dialog.add_line(self.lines[self.line_index])
-                if '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
+                if '@jump' in self.lines[self.line_index]:
+                    pass
+                elif '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
                     self.next_line_add()
             self.speak_sound.play()
         elif self.line_index < len(self.lines) - 1:
             self.line_index += 1
             self.dialog.add_line(self.lines[self.line_index])
             self.dialog.typing = True
-            if '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
+            if '@jump' in self.lines[self.line_index]:
+                pass
+            elif '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
                 self.next_line_add()
             self.speak_sound.play()
         elif self.line_index == len(self.lines) - 1:

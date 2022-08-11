@@ -11,7 +11,7 @@ class Menu:
         self.button_names = ['New game', 'Continue','Exit']
         self.button_nums = len(self.button_names)
         self.level = level
-        self.bg = level.bg_img['bg2']
+        self.bg = level.bg_img[config['title_cover_img']]
         self.bg_rect = self.bg.get_rect(topleft = (0, 0))
         
         # menu title names setup
