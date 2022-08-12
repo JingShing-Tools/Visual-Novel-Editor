@@ -1,0 +1,9 @@
+存檔功能
+多分支
+選項指令
+JUMP指令
+config hint, menu, intro_bgm
+角色動畫
+自訂音效
+typing時的音效
+character.voice=voice
