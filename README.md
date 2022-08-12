@@ -221,4 +221,12 @@ fixed textbox alpha range problem
 add '@jump tag' command
 you need to use '@tag' first
 press 'U' to switch cpu render or gpu render
+
+ver 0.93
+add '@jump file tag'
+update sound system now can auto detect sound effect
+you can now using '#' in dialogues script to make comment
+# can't put jump after refresh since jump has refresh func
+# fixed. refresh and jump command conflit fixed.
+if you need narration you can use 'none:' to talk
 ```
