@@ -24,10 +24,13 @@ config = {
 	'resolution':(800, 600),
 	'window_size':(1280, 720),
 	'allow_img_format':['png', 'jpg', 'bmp'],
+	'allow_audio_format':['mp3', 'wav'],
 	'text_frame_alpha':200,
 	'text_frame_color':(255,255,255),
 	'title_cover_img':'bg2',
 	'only_cpu':False,
+	'hint_use_t':'press \'T\' to talk',
+	'hint_use_enter':'press \'enter\' to continue',
 }
 load_config(config=config)
 

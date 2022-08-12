@@ -3,7 +3,7 @@ from settings import *
 from menu import Menu
 from dialog import Dialog_box
 from save_and_load import found_asset_imgs, found_max_scene
-from music_player import bgm_pause, set_bgm
+from music_player import bgm_pause, set_bgm, sound_dict
 
 class Level:
     def __init__(self):
@@ -38,15 +38,11 @@ class Level:
 
         # dialog
         self.dialog = Dialog_box(self)
-        self.speak_sound = pygame.mixer.Sound(resource_path('assets/audio/menu4.wav'))
-        self.speak_sound.set_volume(0.3)
 
         # create stage
         # bgs
         self.bg_img = {
             'none': pygame.transform.scale(pygame.image.load(resource_path('assets/graphics/characters/none.png')), (152, 152)),
-            # 'bg':pygame.image.load(resource_path('assets/graphics/stages/bg.png')).convert(),
-            # 'bg2':pygame.image.load(resource_path('assets/graphics/stages/bg2.png')).convert(),
         }
         found_asset_imgs(folder_path='assets/graphics/stages/', img_dict=self.bg_img, allow_img_format=config['allow_img_format'])
         self.change_bg('bg')
@@ -168,8 +164,12 @@ class Level:
             load_dialogue(path,lines_acts_all, flag)
             change_lines_all_langs(now_dia_file, flag)
             if jump:
-                self.line_index = 0
-                self.dialog.multiline.append(self.lines[self.line_index])
+                # I know this line is kinda weird but it work
+                # also this line caused next line add need to add some if
+                # like if line index < 0: line index = 0
+                self.line_index = -1
+                # self.dialog.multiline.append(self.lines[self.line_index])
+                self.next_line_add()
     
     def next_line_add(self, using_talk_key = False):
         if using_talk_key:
@@ -177,24 +177,26 @@ class Level:
                 if self.line_index < 0:
                     self.line_index = 0
                 self.dialog.add_line(self.lines[self.line_index])
-                if '@jump' in self.lines[self.line_index]:
-                    pass
-                elif '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
-                    self.next_line_add()
-            self.speak_sound.play()
+                self.detect_command_lines()
+            sound_dict['talk'].play()
         elif self.line_index < len(self.lines) - 1:
             self.line_index += 1
             self.dialog.add_line(self.lines[self.line_index])
             self.dialog.typing = True
-            if '@jump' in self.lines[self.line_index]:
-                pass
-            elif '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
-                self.next_line_add()
-            self.speak_sound.play()
+            self.detect_command_lines()
+            sound_dict['talk'].play()
         elif self.line_index == len(self.lines) - 1:
             self.line_index = 0
             self.dialog.show_textbox = False
             self.dialogue_done_times+=1
+
+    def detect_command_lines(self):
+        if self.lines[self.line_index][0] == '#':
+                self.next_line_add()
+        elif '@jump' in self.lines[self.line_index]:
+            pass
+        elif '@' in self.lines[self.line_index] and not(':' in self.lines[self.line_index]):
+            self.next_line_add()
 
     def cooldown(self):
         current_time = pygame.time.get_ticks()

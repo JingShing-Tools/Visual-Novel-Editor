@@ -117,6 +117,17 @@ def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, t
                 else:
                     img_dict[file_fore_name] = pygame.image.load(folder_path + file_name)
 
+def found_asset_sounds(folder_path='assets/audio/sound/', sound_dict=None, allow_sound_format = ['mp3', 'wav']):
+    if sound_dict:
+        sound_dict.clear()
+        folder_path = resource_path(folder_path)
+        file_list = os.listdir(folder_path)
+        for file_name in file_list:
+            file_format = file_name.split('.')[-1]
+            if file_format in allow_sound_format:
+                file_fore_name = file_name.split('.')[0]
+                sound_dict[file_fore_name] = pygame.mixer.Sound(folder_path + file_name)
+
 def found_max_scene(file_path):
     if os.path.exists(resource_path(file_path)):
         max_scene = 0

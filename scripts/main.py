@@ -21,6 +21,7 @@ class Game:
         self.level.title_screen()
         self.level.menu_state = 'title'
         init_bgm_list()
+        init_sound_list()
         self.bgm_name = bgm_list[0] if len(bgm_list) <= 1 else bgm_list[1]
         set_bgm(self.bgm_name)
 
@@ -46,7 +47,6 @@ class Game:
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
                         self.level.dialog.scrolling_text_time=self.level.dialog.or_delay
-
 
             screen.fill('black')
             self.level.run()

@@ -140,13 +140,9 @@ class Gui_helper:
                 lines_acts_all.append(self.textlistbox.get(i))
             save_dialogue(path, lines_acts_all)
 
-
     def load_lines(self):
-        # lines_acts_all = load_dialogue()
-        # print(lines_acts_all)
         dialogue_path = filedialog.askopenfilename()
         if dialogue_path:
-            # print(dialogue_path)
             file_name = re.split('/|\.', dialogue_path)[-2]
             # re module split multi diagram. '.' is special character need slash.
             global load_file_name
