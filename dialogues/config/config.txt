@@ -1,0 +1,29 @@
+need_help=True
+# open window or not
+title_screen_text=Rainy City
+# set game title
+window_caption=Still Raining:
+# set game caption
+dialogue_file_name=default
+# default dialogue file name
+shader_default=1
+# shader default: 0, no shader. 1 crt shader. 2 scanline.
+default_lang=tchinese
+# now has english, schinese, tchinese
+ending_tch=別來雨都。
+ending=none
+# ending line
+resolution=800,600
+window_size=1280,720
+allow_img_format=png,jpg,bmp
+allow_audio_format=mp3,wav
+# custom image file format you need
+text_frame_alpha=200
+text_frame_color=255,255,255
+title_cover_img=bg3
+only_cpu=False
+hint_use_t=press 'T' to talk
+hint_use_enter=press 'enter' to continue
+intro_bgm=BlueSky
+ending_bg=bg2
+ending_bgm=harmony
