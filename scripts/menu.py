@@ -8,6 +8,7 @@ class Menu:
         
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         # self.button_names = ['New game', 'Continue', 'option', 'Exit', 'save', 'load']
+        # self.button_names = ['Continue','Exit']
         self.button_names = ['New game', 'Continue','Exit']
         self.button_nums = len(self.button_names)
         self.level = level
@@ -59,6 +60,9 @@ class Menu:
                 # to keep not over press
                 self.level.can_press_key=False
                 self.level.press_key_time=pygame.time.get_ticks()
+                if self.level.dialog.option_menu:
+                    self.level.dialog.option_menu.can_move = False
+                    self.level.dialog.option_menu.selection_time = pygame.time.get_ticks()
             
     def selection_cooldown(self):
         if not(self.can_move):
@@ -122,7 +126,6 @@ class Menu:
             # get attributes
             name = self.button_names[index]
             button.display(screen, self.selection_index, name)
-        crt_shader()
 
 class Button:
     def __init__(self, left, top, width, height, index, font):
@@ -158,6 +161,10 @@ class Button:
         elif level.menu_state == 'menu':
             if menu == 'New game':
                 level.__init__()
+                level.dialogue_init()
+                # level.dialogue_done_times=0
+                # level.dialog.first_talk=True
+                # self.dialog.ending = False
             elif menu == 'Continue':
                 level.title_screen()
             elif menu == 'Exit':

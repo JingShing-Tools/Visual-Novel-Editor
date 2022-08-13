@@ -91,8 +91,6 @@ class Dialog_box:
             self.multi_label.clear()
             rendering = ''
             for line_id, lines in enumerate(self.multiline):
-                print(self.multiline)
-                print(self.options)
                 self.textbox_surf.fill(color=(0,0,0,0))
                 self.textbox_bg_surf.fill(self.text_frame_color)
                 pygame.draw.rect(self.textbox_bg_surf, "black", self.border_rect, 6)
@@ -196,7 +194,14 @@ class Dialog_box:
                     elif 'select' in lines:
                         self.multiline[line_id]='@'
                         self.select = True
+                        self.level.can_press_key=False
+                        self.level.press_key_time=pygame.time.get_ticks()
                         self.option_menu.show_options(line_id)
+                        self.option_menu.show_selections()
+                        # prevent player skip options
+                        self.option_menu.can_move=False
+                        self.option_menu.selection_time=pygame.time.get_ticks()
+                        pygame.event.clear()
 
                     elif 'jump' in lines:
                         self.multiline[line_id]='@'
@@ -205,7 +210,7 @@ class Dialog_box:
                         if len(info_act)==4:
                             self.now_script_file_name = info_act[-2]
                         self.level.change_line_script(self.now_script_file_name, '@' + tag, True)
-                        self.refresh_lines(3)
+                        self.refresh_lines(4)
 
                     elif 'refresh' in lines:
                         self.multiline[line_id]='@'
@@ -306,7 +311,7 @@ class Dialog_box:
         if len(self.multi_label) <= self.multiline_max_line - 1:
             self.multiline.append(self.text)
         else:
-            self.refresh_lines()
+            self.refresh_lines(2)
             self.multiline.append(self.text)
 
     def find_prev_line(self, lines, line_id):
@@ -326,7 +331,22 @@ class Dialog_box:
             self.multiline.clear()
             self.multi_label.clear()
         elif mode == 2:
-            self.multi_label.clear()
+            line_id = -1
+            if len(self.multiline)>0:
+                last_line = self.multiline[-1]
+                if '@jump' in last_line:
+                    pass
+                else:
+                    while (not '@' in last_line):
+                        if not last_line:
+                            break
+                        line_id-=1
+                        last_line = self.find_prev_line(self.multiline, line_id)
+                    self.multiline.clear()
+                    self.multi_label.clear()
+                    if last_line:
+                        self.multiline.append(last_line)
+                    self.gradual_typing()
         elif mode == 3:
             line_id = -1
             if len(self.multiline)>0:
@@ -335,17 +355,50 @@ class Dialog_box:
                     pass
                 else:
                     while ('@' in last_line and not':' in last_line):
-                        last_line = self.find_prev_line(self.multiline, line_id-1)
+                        if not last_line:
+                            break
+                        line_id-=1
+                        last_line = self.find_prev_line(self.multiline, line_id)
                     self.multiline.clear()
                     self.multi_label.clear()
                     if last_line:
                         self.multiline.append(last_line)
                         self.gradual_typing()
+        elif mode == 4:
+            # fix jump will eat command
+            line_id = -1
+            step = 0
+            if len(self.multiline)>0:
+                last_line = self.multiline[-1]
+                last_lines = []
+                if '@jump' in last_line:
+                    pass
+                else:
+                    line_id = 0
+                    while 1:
+                        line_id-=1
+                        last_line = self.find_prev_line(self.multiline, line_id)
+                        if not last_line:
+                            break
+                        if step == 0:
+                            if '@' in last_line:
+                                step = 1
+                        if step == 1:
+                            if not('@' in last_line):
+                                break
+                        last_lines.append(last_line)
+                    self.multiline.clear()
+                    self.multi_label.clear()
+                    last_lines.reverse()
+                    if last_lines[-1] == last_lines[-2]:
+                        last_lines.pop()
+                    self.multiline = last_lines.copy()
+                    self.gradual_typing()
 
     def result_print(self):
         self.blit_textbox_bg()
         screen.blit(self.textbox_surf, self.textbox_rect)
-        crt_shader()
+        # crt_shader()
 
     def blit_textbox_bg(self):
         pygame.draw.rect(self.textbox_bg_surf, "black", self.border_rect, 6)
@@ -389,9 +442,12 @@ class Dialog_box:
         screen.blit(text, text_rect)
 
     def display(self):
-        if self.show_textbox:
+        if self.select:
             if self.typing:
                 self.gradual_typing()
             self.result_print()
-        if self.select:
-            self.option_menu.display()
+            self.option_menu.update()
+        elif self.show_textbox:
+            if self.typing:
+                self.gradual_typing()
+            self.result_print()

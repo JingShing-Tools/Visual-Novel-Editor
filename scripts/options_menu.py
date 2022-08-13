@@ -42,14 +42,15 @@ class Option_menu:
                 self.selection_index = (self.selection_index + self.button_nums - 1) % self.button_nums
                 self.can_move = False
                 self.selection_time = pygame.time.get_ticks()
-
             if keys[pygame.K_SPACE] or keys[pygame.K_RETURN]:
-                self.can_move = False
-                self.selection_time = pygame.time.get_ticks()
-                self.dialog.multiline.insert(self.line_id, self.dialog.options[self.dialog.option_names[self.selection_index]]['command'])
-                # self.dialog.options.clear()
-                # to keep not over press
-                self.dialog.select = False
+                if self.dialog.scrolling_text_time>=30:
+                    self.can_move = False
+                    self.selection_time = pygame.time.get_ticks()
+                    command = self.dialog.options[self.dialog.option_names[self.selection_index]]['command']
+                    # self.dialog.multiline.insert(self.line_id, command)
+                    # use add line to fix eat line bug
+                    self.dialog.add_line(command)
+                    self.dialog.select = False
             
     def selection_cooldown(self):
         if not(self.can_move):
@@ -75,18 +76,16 @@ class Option_menu:
             self.selection_list.append(selection)
 
     def show_selections(self):
-        if self.dialog.options:
-            for index, select in enumerate(self.selection_list):
-                # get attributes
-                name = self.dialog.options[self.dialog.option_names[index]]['text']
-                select.display(screen, self.selection_index, name)
+        for index, select in enumerate(self.selection_list):
+            # get attributes
+            name = self.dialog.options[self.dialog.option_names[index]]['text']
+            select.display(screen, self.selection_index, name)
 
-    def display(self):
+    def update(self):
         self.input()
         self.selection_cooldown()
-        # selections
         self.show_selections()
-        crt_shader()
+        # selections
 
 class Selections:
     def __init__(self, left, top, width, height, index, font):

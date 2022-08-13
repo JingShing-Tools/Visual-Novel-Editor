@@ -57,6 +57,15 @@ class Level:
         self.prev_menu_state = 'none'
         self.menu_list = self.menu.button_names
 
+    def dialogue_init(self):
+        if self.language == 'tchinese':
+            lang = '_tch'
+        elif self.language == 'schinese':
+            lang = '_sch'
+        else:
+            lang = ''
+        self.change_line_script(script_name=config['dialogue_file_name']+lang)
+
     def change_bg(self, bg_name=None, scale=True):
         if bg_name==None or bg_name=='none':
             bg_name = self.scene
@@ -100,7 +109,6 @@ class Level:
             # update and draw the game
             self.handle_control()
             self.cooldown()
-            crt_shader()
 
     # player control section
     def import_lines(self, send_list, get_list):
@@ -146,7 +154,7 @@ class Level:
                 self.can_press_key = False
                 if len(self.lines)>0:
                     self.next_line_add(True)
-            if keys[pygame.K_RETURN] and not(self.dialog.select):
+            if keys[pygame.K_RETURN] and not(self.dialog.select) and not(self.dialog.typing):
                 self.press_key_time = pygame.time.get_ticks()
                 self.can_press_key = False
                 if self.dialog.show_textbox and not(self.dialog.typing):

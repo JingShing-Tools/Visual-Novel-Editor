@@ -51,7 +51,6 @@ class Game:
                     if event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
                         self.level.dialog.scrolling_text_time=self.level.dialog.or_delay
 
-            screen.fill('black')
             self.level.run()
             crt_shader()
             self.clock.tick(FPS)
