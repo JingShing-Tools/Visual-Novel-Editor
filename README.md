@@ -235,5 +235,9 @@ ver 0.94
 add config: ending_bg and ending_bgm
 add delay between refresh(you can use shift to speed up)
 fixed:'@jump tag' and '@scene' feature can't use in other language. fixed.
+add '@optionX=text' command
+you can use '@option.text=text', '@option.command=command', '@option.clear' now
+edit:'@option.command' == '@option.com' -> '@option.com=command' it would
+put @ in command
 
 ```
