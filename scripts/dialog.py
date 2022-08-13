@@ -3,6 +3,7 @@ from settings import *
 import re
 from music_player import *
 from save_and_load import found_asset_imgs
+from options_menu import Option_menu
 
 class Dialog_box:
     def __init__(self, level):
@@ -78,12 +79,20 @@ class Dialog_box:
         self.talker_name_rect = self.talker_name_surf.get_rect()
         self.talker_name_frame_extend = (10, 10)
 
+        # options
+        self.options = {}
+        self.option_names = []
+        self.select  = False
+        self.option_menu = Option_menu(self)
+
     def gradual_typing(self):
         if self.typing:
             line_num = len(self.multiline)
             self.multi_label.clear()
             rendering = ''
             for line_id, lines in enumerate(self.multiline):
+                print(self.multiline)
+                print(self.options)
                 self.textbox_surf.fill(color=(0,0,0,0))
                 self.textbox_bg_surf.fill(self.text_frame_color)
                 pygame.draw.rect(self.textbox_bg_surf, "black", self.border_rect, 6)
@@ -142,6 +151,27 @@ class Dialog_box:
                             delay = info_act[-1]
                             self.or_delay = int(delay)
                             self.scrolling_text_time = self.or_delay
+                        elif 'option' in lines:
+                            if '.clear' in lines:
+                                self.options.clear()
+                            elif '.text' in lines:
+                                info_act = re.split('@|=|\.', lines)
+                                option = info_act[1]
+                                text = info_act[-1]
+                                self.options[option]['text']=text
+                            elif '.com' in lines or '.command' in lines:
+                                info_act = re.split('@|=|\.', lines)
+                                option = info_act[1]
+                                command = info_act[-1]
+                                self.options[option]['command']='@'+command
+                            else:
+                                info_act = re.split('@|=', lines)
+                                option = info_act[1]
+                                text = info_act[-1]
+                                self.options[option]={
+                                    'text':text,
+                                    'command':'@',
+                                }
                         elif not('.' in talker):
                             character_name = info_act[-1]
                             if talker == 'npc' or talker == 'n':
@@ -162,6 +192,12 @@ class Dialog_box:
                                 self.talker_img_name[character_name] = 'none'
                         self.multiline[line_id]='@'
                         # to clear command not to repeat
+
+                    elif 'select' in lines:
+                        self.multiline[line_id]='@'
+                        self.select = True
+                        self.option_menu.show_options(line_id)
+
                     elif 'jump' in lines:
                         self.multiline[line_id]='@'
                         info_act = re.split('@|=| ', lines)
@@ -245,7 +281,12 @@ class Dialog_box:
                                 crt_shader()
 
         self.typing = False
-    
+
+    def get_option_names(self):
+        self.option_names.clear()
+        for name in self.options:
+            self.option_names.append(name)
+
     def show_talker_name(self):
         if self.talker_name != 'none':
             self.talker_name_surf = self.font.render(self.talker_name, self.font_AA, TEXT_COLOR)
@@ -352,3 +393,5 @@ class Dialog_box:
             if self.typing:
                 self.gradual_typing()
             self.result_print()
+        if self.select:
+            self.option_menu.display()

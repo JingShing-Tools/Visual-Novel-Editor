@@ -122,7 +122,7 @@ class Level:
             self.dialog.display()
         if self.can_press_key:
             self.dialog.blit_press_hint()
-            if keys[pygame.K_t]:
+            if keys[pygame.K_t] and not(self.dialog.select):
                 self.dialog.refresh_lines()
                 # this will clear text box
                 self.dialog.show_textbox = True
@@ -146,7 +146,7 @@ class Level:
                 self.can_press_key = False
                 if len(self.lines)>0:
                     self.next_line_add(True)
-            if keys[pygame.K_RETURN]:
+            if keys[pygame.K_RETURN] and not(self.dialog.select):
                 self.press_key_time = pygame.time.get_ticks()
                 self.can_press_key = False
                 if self.dialog.show_textbox and not(self.dialog.typing):

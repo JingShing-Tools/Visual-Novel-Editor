@@ -124,7 +124,6 @@ class Menu:
             button.display(screen, self.selection_index, name)
         crt_shader()
 
-
 class Button:
     def __init__(self, left, top, width, height, index, font):
         self.rect = pygame.Rect(left, top, width, height)
