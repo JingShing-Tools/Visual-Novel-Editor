@@ -239,5 +239,11 @@ add '@optionX=text' command
 you can use '@option.text=text', '@option.command=command', '@option.clear' now
 edit:'@option.command' == '@option.com' -> '@option.com=command' it would
 put @ in command
+fixed: jump will eat command.
+
+removed most crt_shader.render to avoid flicker. only keep main and dialog.
+to update screen.
+bug:can't put select and lines after refresh
+fixed:use add line to fix bug
 
 ```
