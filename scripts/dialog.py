@@ -7,13 +7,20 @@ from save_and_load import found_asset_imgs
 class Dialog_box:
     def __init__(self, level):
         self.level = level
+        self.language = self.level.language
         
         self.screen_width = screen.get_size()[0]
         self.screen_height = screen.get_size()[1]
         self.now_script_file_name = config['dialogue_file_name']
+        if self.language == 'english':
+            pass
+        elif self.language == 'schinese':
+            self.now_script_file_name += '_sch'
+        elif self.language == 'tchinese':
+            self.now_script_file_name += '_tch'
 
-        # self.font = pygame.font.SysFont('youyuan', 25)
         self.font = pygame.font.Font(dialogue_font, 25)
+        self.font_AA = False
         # textbox_size = (700,200)
         textbox_size = (WIDTH/1.2,HEIGHT/3)
         self.textbox_surf = pygame.Surface(textbox_size, pygame.SRCALPHA)
@@ -67,7 +74,7 @@ class Dialog_box:
         }
         self.talker_type = 'none'
         self.talker_name = 'Unknown'
-        self.talker_name_surf = self.font.render(self.talker_name, False, TEXT_COLOR)
+        self.talker_name_surf = self.font.render(self.talker_name, self.font_AA, TEXT_COLOR)
         self.talker_name_rect = self.talker_name_surf.get_rect()
         self.talker_name_frame_extend = (10, 10)
 
@@ -115,6 +122,8 @@ class Dialog_box:
                                     talker = 'player'
                                 elif talker == 'n':
                                     talker = 'npc'
+                            if ',' in color_name:
+                                color_name = list(map(int, color_name.split(',')))
                                 self.text_color_dict[talker] = color_name
                         elif '.alpha' in talker:
                             alpha_value = int(info_act[-1])
@@ -151,6 +160,8 @@ class Dialog_box:
                                         self.text_color_dict[character_name]='red'
                             if not(character_name in self.talker_img_name):
                                 self.talker_img_name[character_name] = 'none'
+                        self.multiline[line_id]='@'
+                        # to clear command not to repeat
                     elif 'jump' in lines:
                         self.multiline[line_id]='@'
                         info_act = re.split('@|=| ', lines)
@@ -208,7 +219,7 @@ class Dialog_box:
                         # if switch chracter talk refresh text
 
                     if line_num > 1 and line_id < line_num - 1:
-                        row_text = self.font.render(lines, 1, self.text_color_dict[self.talker_name])
+                        row_text = self.font.render(lines, self.font_AA, self.text_color_dict[self.talker_name])
                         self.multi_label.append(row_text)
 
                     elif line_id == line_num - 1:
@@ -225,20 +236,19 @@ class Dialog_box:
                                 pass
                             else:
                                 self.text_color_dict[self.talker_name] = 'black'
-                            rendered_text = self.font.render(rendering, 1, self.text_color_dict[self.talker_name])
+                            rendered_text = self.font.render(rendering, self.font_AA, self.text_color_dict[self.talker_name])
 
                             self.multi_label[-1] = rendered_text
                             for line in range(len(self.multi_label)):
                                 self.textbox_surf.blit(self.multi_label[line], (20, 30 + line * self.line_internal))
                                 screen.blit(self.textbox_surf, self.textbox_rect)
                                 crt_shader()
-                            # self.result_print()
 
         self.typing = False
     
     def show_talker_name(self):
         if self.talker_name != 'none':
-            self.talker_name_surf = self.font.render(self.talker_name, False, TEXT_COLOR)
+            self.talker_name_surf = self.font.render(self.talker_name, self.font_AA, TEXT_COLOR)
             self.talker_name_rect = self.talker_name_surf.get_rect(bottomright = self.talker_image_rect.bottomright)
             if self.talker_type == 'player':
                 self.talker_name_rect = self.talker_name_surf.get_rect(bottomleft = self.talker_image_rect.bottomright)
@@ -264,6 +274,13 @@ class Dialog_box:
         else:
             return lines[line_id]
     def refresh_lines(self, mode=1):
+        # delay betwean refreshs
+        delay = min(1000, self.scrolling_text_time * 40)
+        pygame.time.delay(delay)
+        pygame.event.clear()
+        self.level.can_press_key = False
+        self.level.press_key_time = pygame.time.get_ticks()
+
         if mode == 1:
             self.multiline.clear()
             self.multi_label.clear()
@@ -301,7 +318,12 @@ class Dialog_box:
         thickness = 2
         text = config['hint_use_t'] if (len(self.multiline) == 0 or not(self.show_textbox)) else config['hint_use_enter']
         if self.ending:
-            text = config['ending']
+            if self.language == 'english':
+                text = config['ending']
+            elif self.language == 'tchinese':
+                text = config['ending_tch']
+            elif self.language == 'schinese':
+                text = config['ending_sch']
         outline_color = 'black'
         fill_color = 'white'
         self.blit_text_with_outline(x, y, text, thickness, outline_color, fill_color)
@@ -321,7 +343,7 @@ class Dialog_box:
         self.draw_text(x, y, text, fill_color)
 
     def draw_text(self, x, y, text, color):
-        text = self.font.render(text, True, color)
+        text = self.font.render(text, self.font_AA, color)
         text_rect = text.get_rect(center = (x, y))
         screen.blit(text, text_rect)
 

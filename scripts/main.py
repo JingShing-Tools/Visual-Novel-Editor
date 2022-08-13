@@ -22,7 +22,10 @@ class Game:
         self.level.menu_state = 'title'
         init_bgm_list()
         init_sound_list()
-        self.bgm_name = bgm_list[0] if len(bgm_list) <= 1 else bgm_list[1]
+        if config['intro_bgm']=='none':
+            self.bgm_name = bgm_list[0] if len(bgm_list) <= 1 else bgm_list[1]
+        else:
+            self.bgm_name = config['intro_bgm']
         set_bgm(self.bgm_name)
 
     def run(self):

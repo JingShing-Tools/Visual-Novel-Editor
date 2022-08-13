@@ -62,7 +62,7 @@ def load_dialogue(path, lines, start_line = None):
                         lines.append(line)
 
 import os
-def load_config(path='dialogues\config.txt', config=None):
+def load_config(path='dialogues\config\config.txt', config=None):
     if config:
         if os.path.exists(path):
             with open(resource_path(path), encoding='UTF-8') as file:

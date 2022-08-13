@@ -16,6 +16,7 @@ class Menu:
         
         # menu title names setup
         self.menu_font = pygame.font.Font(UI_FONT, UI_FONT_SIZE * 3)
+        # self.menu_font = pygame.font.Font(dialogue_font, UI_FONT_SIZE * 3)
         self.menu_state = ['title', 'menu']
         self.title_names = [config['title_screen_text'], 'Menu']
         self.menu_index = 0

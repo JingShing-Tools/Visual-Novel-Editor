@@ -26,12 +26,11 @@ class Level:
         # record how many times dialogue done
         self.dialogue_done_times = 0
         self.line_index = 0
-        # self.languages = ['english', 'tchinese']
         self.languages = ['english', 'tchinese', 'schinese']
         if config['default_lang'] in self.languages:
             self.language = config['default_lang']
         else:
-            self.languages = 'english'
+            self.language = 'english'
         self.language_index = 0
         self.lines = lines_acts_all
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
@@ -49,7 +48,7 @@ class Level:
         self.scene = 'bg'
 
         # save
-        self.max_scene = found_max_scene('dialogues/'+ config['dialogue_file_name'] +'.txt')
+        self.max_scene = found_max_scene('dialogues/'+ self.dialog.now_script_file_name +'.txt')
         self.has_save = False
 
         # user interface
@@ -59,7 +58,7 @@ class Level:
         self.menu_list = self.menu.button_names
 
     def change_bg(self, bg_name=None, scale=True):
-        if bg_name==None:
+        if bg_name==None or bg_name=='none':
             bg_name = self.scene
         # scale bg background
         if scale:
@@ -132,11 +131,14 @@ class Level:
                     pass
                 elif self.dialogue_done_times <= self.max_scene:
                     self.dialog.first_talk=True
-                    self.change_line_script(config['dialogue_file_name'], '@scene' + str(self.dialogue_done_times))
+                    # self.change_line_script(config['dialogue_file_name'], '@scene' + str(self.dialogue_done_times))
+                    self.change_line_script(self.dialog.now_script_file_name, '@scene' + str(self.dialogue_done_times))
                 else:
                     self.dialog.show_textbox = False
                     self.dialog.typing = False
                     self.dialog.ending = True
+                    set_bgm(config['ending_bgm'])
+                    self.change_bg(config['ending_bg'])
                     lines_acts_all.clear()
                 if self.dialogue_done_times != 0:
                     self.language_change()
@@ -161,7 +163,9 @@ class Level:
         now_dia_file = script_name
         path = dia_fore_path + now_dia_file + now_dia_file_format
         if found_dialogue_or_not(now_dia_file+now_dia_file_format):
-            load_dialogue(path,lines_acts_all, flag)
+            load_dialogue(path, lines_acts_all, flag)
+            if '_' in now_dia_file:
+                now_dia_file = now_dia_file.split('_')[0]
             change_lines_all_langs(now_dia_file, flag)
             if jump:
                 # I know this line is kinda weird but it work

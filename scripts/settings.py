@@ -15,22 +15,27 @@ def resource_path(relative):
 
 config = {
 	'need_help':True,
+	'intro_bgm':'none',
+	'title_cover_img':'bg2',
 	'title_screen_text':'Crt TV',
 	'window_caption':'still_loading',
 	'dialogue_file_name':'default',
 	'shader_default':1,
 	'default_lang':'english',
-	'ending':'Nothing here',
 	'resolution':(800, 600),
 	'window_size':(1280, 720),
 	'allow_img_format':['png', 'jpg', 'bmp'],
 	'allow_audio_format':['mp3', 'wav'],
 	'text_frame_alpha':200,
 	'text_frame_color':(255,255,255),
-	'title_cover_img':'bg2',
 	'only_cpu':False,
 	'hint_use_t':'press \'T\' to talk',
 	'hint_use_enter':'press \'enter\' to continue',
+	'ending':'Nothing here',
+	'ending_tch':'沒東西了',
+	'ending_sch':'沒東西了',
+	'ending_bgm':'none',
+	'ending_bg':'none',
 }
 load_config(config=config)
 
