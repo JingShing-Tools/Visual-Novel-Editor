@@ -167,3 +167,7 @@ class Gui_helper:
 
     def run(self):
         self.root.mainloop()
+
+class Config_setter:
+    def __init__(self):
+        pass

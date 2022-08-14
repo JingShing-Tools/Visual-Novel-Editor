@@ -1,6 +1,5 @@
 import pygame, sys
 from settings import *
-from save_and_load import save_file, load_file
 
 class Menu:
     def __init__(self, level):
@@ -155,7 +154,7 @@ class Button:
                 else:
                     level.toggle_menu()
             elif menu == 'Exit':
-                save_file(level)
+                # save_file(level)
                 pygame.quit()
                 sys.exit()
         elif level.menu_state == 'menu':
@@ -173,10 +172,11 @@ class Button:
 
         # save button
         if menu == 'save':
-            save_file(level)
+            # save_file(level)
+            pass
         elif menu == 'load' and level.has_save:
             level.__init__()
-            load_file(level)
+            # load_file(level)
         
     def display(self, surface, selection_num, name):
         if self.index == selection_num:

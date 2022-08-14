@@ -210,7 +210,7 @@ class Dialog_box:
                         if len(info_act)==4:
                             self.now_script_file_name = info_act[-2]
                         self.level.change_line_script(self.now_script_file_name, '@' + tag, True)
-                        self.refresh_lines(4)
+                        self.refresh_lines(5)
 
                     elif 'refresh' in lines:
                         self.multiline[line_id]='@'
@@ -311,7 +311,7 @@ class Dialog_box:
         if len(self.multi_label) <= self.multiline_max_line - 1:
             self.multiline.append(self.text)
         else:
-            self.refresh_lines(2)
+            self.refresh_lines()
             self.multiline.append(self.text)
 
     def find_prev_line(self, lines, line_id):
@@ -331,22 +331,22 @@ class Dialog_box:
             self.multiline.clear()
             self.multi_label.clear()
         elif mode == 2:
-            line_id = -1
             if len(self.multiline)>0:
                 last_line = self.multiline[-1]
-                if '@jump' in last_line:
-                    pass
-                else:
-                    while (not '@' in last_line):
-                        if not last_line:
-                            break
-                        line_id-=1
-                        last_line = self.find_prev_line(self.multiline, line_id)
-                    self.multiline.clear()
-                    self.multi_label.clear()
-                    if last_line:
-                        self.multiline.append(last_line)
-                    self.gradual_typing()
+                if last_line:
+                    if '@jump' in last_line:
+                        pass
+                    else:
+                        while (not '@' in last_line):
+                            if not last_line:
+                                break
+                            line_id-=1
+                            last_line = self.find_prev_line(self.multiline, line_id)
+                            self.multiline.clear()
+                            self.multi_label.clear()
+                            if last_line:
+                                self.multiline.append(last_line)
+                            self.gradual_typing()
         elif mode == 3:
             line_id = -1
             if len(self.multiline)>0:
@@ -387,6 +387,36 @@ class Dialog_box:
                             if not('@' in last_line):
                                 break
                         last_lines.append(last_line)
+                    self.multiline.clear()
+                    self.multi_label.clear()
+                    last_lines.reverse()
+                    if last_lines[-1] == last_lines[-2]:
+                        last_lines.pop()
+                    self.multiline = last_lines.copy()
+                    self.gradual_typing()
+        elif mode == 5:
+            # fix mode 4 will add weird line
+            line_id = -1
+            step = 0
+            if len(self.multiline)>0:
+                last_line = self.multiline[-1]
+                last_lines = []
+                last_lines.append(last_line)
+                if '@jump' in last_line:
+                    pass
+                else:
+                    line_id = -1
+                    while 1:
+                        line_id-=1
+                        last_line = self.find_prev_line(self.multiline, line_id)
+                        if not last_line:
+                            break
+                        if '@' in last_line:
+                            step = 1
+                            last_lines.append(last_line)
+                        if step == 1:
+                            if not('@' in last_line):
+                                break
                     self.multiline.clear()
                     self.multi_label.clear()
                     last_lines.reverse()

@@ -159,9 +159,11 @@ class Level:
                 self.can_press_key = False
                 if self.dialog.show_textbox and not(self.dialog.typing):
                     self.next_line_add()
-            if keys[pygame.K_y]:
+            if keys[pygame.K_y] and not(self.dialog.select):
                 self.press_key_time = pygame.time.get_ticks()
                 self.can_press_key = False
+                # to load character info
+                self.line_index = 0
                 self.language_index = (self.language_index + 1)  % len(self.languages)
                 self.language = self.languages[self.language_index]
                 self.language_change()

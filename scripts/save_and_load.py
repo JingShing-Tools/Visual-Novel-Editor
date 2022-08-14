@@ -92,6 +92,12 @@ def load_config(path='dialogues\config\config.txt', config=None):
                             value = value.split(',')
                         config[stat] = value
 
+def save_config(path='dialogues\config\config.txt', config=None):
+     if config:
+        if os.path.exists(path):
+            with open(resource_path(path), encoding='UTF-8') as file:
+                pass
+
 def found_save_or_not(level):
     # check if save_file.txt exist
     try:
