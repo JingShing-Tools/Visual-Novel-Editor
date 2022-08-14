@@ -101,7 +101,7 @@ class Level:
         if self.game_paused:
             # menu system showed
             if self.menu_state == 'title' or self.menu_state == 'menu' or self.menu_state == 'dead_screen':
-                self.menu.display()
+                self.menu.update()
         else:
             if self.menu_state != 'none':
                 self.menu_state = 'none'

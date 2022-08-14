@@ -1,4 +1,4 @@
-import json, re
+import json
 from settings import *
 
 def resource_path(relative):
@@ -77,6 +77,11 @@ def load_config(path='dialogues\config\config.txt', config=None):
                         sets = line.split('=')
                         stat = sets[0]
                         value = sets[-1]
+                        value = value.replace('(','')
+                        value = value.replace(')','')
+                        value = value.replace('[','')
+                        value = value.replace(']','')
+                        value = value.replace('\'','')
                         if stat == 'need_help' or stat == 'only_cpu':
                             if value == 'True':
                                 value = True
@@ -93,10 +98,17 @@ def load_config(path='dialogues\config\config.txt', config=None):
                         config[stat] = value
 
 def save_config(path='dialogues\config\config.txt', config=None):
-     if config:
+    if config:
         if os.path.exists(path):
-            with open(resource_path(path), encoding='UTF-8') as file:
-                pass
+            with open(resource_path(path), 'w', encoding='UTF-8') as file:
+                for item in config:
+                    line = item + '=' + str(config[item])
+                    line = line.replace('(','')
+                    line = line.replace(')','')
+                    line = line.replace('[','')
+                    line = line.replace(']','')
+                    line = line.replace('\'','')
+                    file.write(line + '\n')
 
 def found_save_or_not(level):
     # check if save_file.txt exist
@@ -111,7 +123,8 @@ def found_dialogue_or_not(file_name):
 
 def found_asset_imgs(folder_path='assets/graphics/characters/', img_dict=None, transform = False, scale=(152, 152), allow_img_format = ['png', 'jpg', 'bmp']):
     if img_dict:
-        img_dict.clear()
+        if len(img_dict) > 1 and not('none' in img_dict):
+            img_dict.clear()
         folder_path = resource_path(folder_path)
         file_list = os.listdir(folder_path)
         for file_name in file_list:

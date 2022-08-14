@@ -1,5 +1,6 @@
 import pygame, sys
 from settings import *
+from save_and_load import save_config
 
 class Menu:
     def __init__(self, level):
@@ -8,7 +9,10 @@ class Menu:
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         # self.button_names = ['New game', 'Continue', 'option', 'Exit', 'save', 'load']
         # self.button_names = ['Continue','Exit']
-        self.button_names = ['New game', 'Continue','Exit']
+        self.button_names = ['New game','Continue','option','Exit']
+        self.option_button_names = ['language','render','Exit']
+        self.language_names = ['english','schinese','tchinese','Exit']
+        self.render_names = ['gpu+cpu', 'cpu_only']
         self.button_nums = len(self.button_names)
         self.level = level
         self.bg = level.bg_img[config['title_cover_img']]
@@ -17,9 +21,9 @@ class Menu:
         # menu title names setup
         self.menu_font = pygame.font.Font(UI_FONT, UI_FONT_SIZE * 3)
         # self.menu_font = pygame.font.Font(dialogue_font, UI_FONT_SIZE * 3)
-        self.menu_state = ['title', 'menu']
         self.title_names = [config['title_screen_text'], 'Menu']
         self.menu_index = 0
+        self.menu_state = self.level.menu_state
         self.menu_color = TEXT_COLOR_SELECTED
         self.full_width = screen.get_size()[0]
         self.full_height = screen.get_size()[1]
@@ -28,12 +32,11 @@ class Menu:
             # button width and button height
         self.width = self.full_width // ((self.button_nums + 1))
         self.height = self.full_height * 0.08
+        self.button_list = []
         self.create_button()
 
         # selection system
         self.selection_index = 0
-        if self.level.menu_state == 'dead_screen' or self.level.has_save:
-            self.selection_index = 1
         self.selection_time = None
         self.can_move = True
         self.alpha = 128
@@ -55,14 +58,14 @@ class Menu:
             if keys[pygame.K_SPACE] or keys[pygame.K_RETURN]:
                 self.can_move = False
                 self.selection_time = pygame.time.get_ticks()
-                self.button_list[self.selection_index].trigger(self.level)
+                self.button_list[self.selection_index].trigger(self.level, self)
                 # to keep not over press
                 self.level.can_press_key=False
                 self.level.press_key_time=pygame.time.get_ticks()
                 if self.level.dialog.option_menu:
                     self.level.dialog.option_menu.can_move = False
                     self.level.dialog.option_menu.selection_time = pygame.time.get_ticks()
-            
+
     def selection_cooldown(self):
         if not(self.can_move):
             current_time = pygame.time.get_ticks()
@@ -70,7 +73,7 @@ class Menu:
                 self.can_move = True
 
     def create_button(self):
-        self.button_list = []
+        self.button_list.clear()
 
         for button, index in enumerate(range(self.button_nums)):
             if index < 4: # for upper button
@@ -96,8 +99,6 @@ class Menu:
                 self.button_list.append(button)
 
     def display(self):
-        self.input()
-        self.selection_cooldown()
         if self.level.menu_state == 'title':
             self.alpha = 128
             self.bg_color = (255, 255, 255)
@@ -120,11 +121,28 @@ class Menu:
         title_rect = title_surf.get_rect(midtop = (self.full_width/2, self.full_height/2) + pygame.math.Vector2(0, 20))
         screen.blit(title_surf, title_rect)
 
-        # buttons
-        for index, button in enumerate(self.button_list):
-            # get attributes
-            name = self.button_names[index]
-            button.display(screen, self.selection_index, name)
+        self.show_buttons()
+
+    def show_buttons(self):
+        if self.menu_state == 'option':
+            for index, name in enumerate(self.option_button_names):
+                self.button_list[index].display(screen, self.selection_index, name)
+        elif self.menu_state == 'language':
+            for index, name in enumerate(self.language_names):
+                self.button_list[index].display(screen, self.selection_index, name)
+        elif self.menu_state == 'render':
+            for index, name in enumerate(self.render_names):
+                self.button_list[index].display(screen, self.selection_index, name)
+        else:
+            # buttons
+            for index, name in enumerate(self.button_names):
+                # get attributes
+                self.button_list[index].display(screen, self.selection_index, name)
+
+    def update(self):
+        self.input()
+        self.selection_cooldown()
+        self.display()
 
 class Button:
     def __init__(self, left, top, width, height, index, font):
@@ -142,41 +160,80 @@ class Button:
         # draw
         surface.blit(title_surf, title_rect)
 
-    def trigger(self, level):
-        menu = level.menu_list[self.index]
-        if level.menu_state == 'title':
-            if menu == 'New game':
+    def trigger(self, level, menu):
+        option = menu.button_names[self.index]
+        if menu.menu_state == 'option':
+            option = menu.option_button_names[self.index]
+            if option == 'Exit':
+                menu.menu_state = level.menu_state
+                menu.button_nums = len(menu.button_names)
+            else:
+                menu.menu_state = option
+                if option == 'language':
+                    menu.button_nums = len(menu.language_names)
+                elif option == 'render':
+                    menu.button_nums = len(menu.render_names)
+            menu.selection_index = 0
+        elif menu.menu_state == 'language':
+            option = menu.language_names[self.index]
+            if option == 'Exit':
+                pass
+            else:
+                config['default_lang']=option
+                level.language = config['default_lang']
+                level.language_change()
+            menu.menu_state = 'option'
+            menu.selection_index = 0
+            menu.button_nums = len(menu.option_button_names)
+        elif menu.menu_state == 'render':
+            option = menu.render_names[self.index]
+            if option == 'Exit':
+                pass
+            else:
+                if option == 'cpu_only':
+                    config['only_cpu'] = True
+                else:
+                    config['only_cpu'] = False
+            if config['only_cpu']:
+                pygame.display.set_mode(VIRTUAL_RES)
+            else:
+                pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
+            crt_shader.__init__(crt_shader.screen,VIRTUAL_RES=VIRTUAL_RES, cpu_only=config['only_cpu'])
+            menu.menu_state = 'option'
+            menu.selection_index = 0
+            menu.button_nums = len(menu.option_button_names)
+
+        elif level.menu_state == 'title':
+            if option == 'New game':
                 # level.__init__()
                 level.toggle_menu()
-            elif menu == 'Continue':
+            elif option == 'Continue':
                 if level.has_save:
                     pass
                 else:
                     level.toggle_menu()
-            elif menu == 'Exit':
-                # save_file(level)
+            elif option == 'Exit':
+                save_config(config=config)
                 pygame.quit()
                 sys.exit()
         elif level.menu_state == 'menu':
-            if menu == 'New game':
+            if option == 'New game':
                 level.__init__()
                 level.dialogue_init()
-                # level.dialogue_done_times=0
-                # level.dialog.first_talk=True
-                # self.dialog.ending = False
-            elif menu == 'Continue':
+            elif option == 'Continue':
                 level.title_screen()
-            elif menu == 'Exit':
+            elif option == 'Exit':
+                save_config(config=config)
                 pygame.quit()
                 sys.exit()
 
-        # save button
-        if menu == 'save':
-            # save_file(level)
-            pass
-        elif menu == 'load' and level.has_save:
-            level.__init__()
-            # load_file(level)
+        if option == 'option':
+            menu.menu_state = 'option'
+            menu.button_nums = len(menu.option_button_names)
+            menu.selection_index = 0
+
+        if menu.button_nums != len(menu.button_list):
+            menu.create_button()
         
     def display(self, surface, selection_num, name):
         if self.index == selection_num:

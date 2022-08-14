@@ -55,7 +55,7 @@ class Game:
             crt_shader()
             self.clock.tick(FPS)
             pygame.display.set_caption(config['window_caption'] + ' ' + str(round(self.clock.get_fps())))
-    
+
     def Full_screen(self):
         if not(config['only_cpu']):
             if not(self.fullscreen):
