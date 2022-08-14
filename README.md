@@ -248,4 +248,6 @@ fixed:use add line to fix bug
 fixed:jump failed add weird line in wrong place
 fixed:save_file.txt bug fixed.
 
+add option menu -> can edit render mode and language by gui now.
+
 ```
