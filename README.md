@@ -245,5 +245,7 @@ removed most crt_shader.render to avoid flicker. only keep main and dialog.
 to update screen.
 bug:can't put select and lines after refresh
 fixed:use add line to fix bug
+fixed:jump failed add weird line in wrong place
+fixed:save_file.txt bug fixed.
 
 ```
