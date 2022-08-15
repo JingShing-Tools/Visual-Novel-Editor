@@ -3,7 +3,9 @@ A derivative of my Dialogue Editor. It's purely a visual novel style
 
 You can get this editor exe now on Itch.io : https://jingshing.itch.io/visualnovelmaker
 
-A game based on this editor is available on itch.io : https://jingshing.itch.io/crt-prison
+A sample game based on this editor is available on itch.io : https://jingshing.itch.io/crt-prison
+
+RainyCity based on this tool now available on itch.io : https://jingshing.itch.io/raincity
 
 It's based on pygame.
 
