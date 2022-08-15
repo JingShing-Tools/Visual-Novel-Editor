@@ -283,7 +283,7 @@ class Dialog_box:
                             for line in range(len(self.multi_label)):
                                 self.textbox_surf.blit(self.multi_label[line], (20, 30 + line * self.line_internal))
                                 screen.blit(self.textbox_surf, self.textbox_rect)
-                                crt_shader()
+                            crt_shader()
 
         self.typing = False
 

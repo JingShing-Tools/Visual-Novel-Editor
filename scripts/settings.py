@@ -28,7 +28,7 @@ config = {
 	'allow_audio_format':['mp3', 'wav'],
 	'text_frame_alpha':200,
 	'text_frame_color':(255,255,255),
-	'only_cpu':False,
+	'cpu_only':False,
 	'hint_use_t':'press \'T\' to talk',
 	'hint_use_enter':'press \'enter\' to continue',
 	'ending':'Nothing here',
@@ -45,12 +45,12 @@ HEIGHT   = config['resolution'][1]
 VIRTUAL_RES = config['resolution']
 REAL_RES = config['window_size']
 FPS = 60
-if config['only_cpu']:
+if config['cpu_only']:
 	pygame.display.set_mode(VIRTUAL_RES)
 else:
 	pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
 screen = pygame.Surface(VIRTUAL_RES).convert((255, 65280, 16711680, 0))
-crt_shader = Graphic_engine(screen, config['shader_default'], VIRTUAL_RES, cpu_only=config['only_cpu'])
+crt_shader = Graphic_engine(screen, config['shader_default'], VIRTUAL_RES, cpu_only=config['cpu_only'])
 
 # ui
 BAR_HEIGHT = 20

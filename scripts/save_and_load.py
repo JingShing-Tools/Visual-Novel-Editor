@@ -62,10 +62,10 @@ def load_dialogue(path, lines, start_line = None):
                         lines.append(line)
 
 import os
-def load_config(path='dialogues\config\config.txt', config=None):
+def load_config(path='config\config.txt', config=None):
     if config:
         if os.path.exists(path):
-            with open(resource_path(path), encoding='UTF-8') as file:
+            with open(path, encoding='UTF-8') as file:
                 while(1):
                     line = file.readline()
                     if not(line):break
@@ -82,7 +82,7 @@ def load_config(path='dialogues\config\config.txt', config=None):
                         value = value.replace('[','')
                         value = value.replace(']','')
                         value = value.replace('\'','')
-                        if stat == 'need_help' or stat == 'only_cpu':
+                        if stat == 'need_help' or stat == 'cpu_only':
                             if value == 'True':
                                 value = True
                             else:value = False
@@ -93,14 +93,15 @@ def load_config(path='dialogues\config\config.txt', config=None):
                             value = list(map(int, value))
                         elif stat == 'resolution' or stat == 'window_size':
                             value = eval(value)
-                        elif stat == 'allow_img_format':
+                        elif stat == 'allow_img_format' or stat == 'allow_audio_format':
+                            value = value.replace(' ','')
                             value = value.split(',')
                         config[stat] = value
 
-def save_config(path='dialogues\config\config.txt', config=None):
+def save_config(path='config\config.txt', config=None):
     if config:
         if os.path.exists(path):
-            with open(resource_path(path), 'w', encoding='UTF-8') as file:
+            with open(path, 'w', encoding='UTF-8') as file:
                 for item in config:
                     line = item + '=' + str(config[item])
                     line = line.replace('(','')

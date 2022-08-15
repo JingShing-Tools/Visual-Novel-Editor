@@ -36,9 +36,9 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.level.toggle_menu()
-                    elif event.key == pygame.K_ESCAPE:
+                    elif event.key == pygame.K_ESCAPE and self.level.menu_state!='title':
                         self.level.title_screen()
-                    elif event.key == pygame.K_0:
+                    elif event.key == pygame.K_0 and not(config['cpu_only']):
                         crt_shader.__init__(crt_shader.screen, (crt_shader.style + 1) % 3, VIRTUAL_RES)
                     elif event.key == pygame.K_f:
                         self.fullscreen = not(self.fullscreen)
@@ -57,7 +57,7 @@ class Game:
             pygame.display.set_caption(config['window_caption'] + ' ' + str(round(self.clock.get_fps())))
 
     def Full_screen(self):
-        if not(config['only_cpu']):
+        if not(config['cpu_only']):
             if not(self.fullscreen):
                 pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
             else:
@@ -69,14 +69,18 @@ class Game:
                 pygame.display.set_mode(VIRTUAL_RES, pygame.FULLSCREEN)
 
     def cpu_gpu_switch(self):
-        config['only_cpu'] = not(config['only_cpu'])
+        config['cpu_only'] = not(config['cpu_only'])
         self.Full_screen()
-        crt_shader.__init__(crt_shader.screen,VIRTUAL_RES=VIRTUAL_RES, cpu_only=config['only_cpu'])
+        crt_shader.__init__(crt_shader.screen,VIRTUAL_RES=VIRTUAL_RES, cpu_only=config['cpu_only'])
 
     def quit_game(self):
         pygame.quit()
         sys.exit()
 
+release = True
+# prevent edit content
+if release:
+    config['need_help'] = False
 need_helper = config['need_help']
 if __name__ == '__main__':
     game = Game()

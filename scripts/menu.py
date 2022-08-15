@@ -1,6 +1,7 @@
 import pygame, sys
 from settings import *
 from save_and_load import save_config
+from music_player import sound_dict
 
 class Menu:
     def __init__(self, level):
@@ -10,9 +11,9 @@ class Menu:
         # self.button_names = ['New game', 'Continue', 'option', 'Exit', 'save', 'load']
         # self.button_names = ['Continue','Exit']
         self.button_names = ['New game','Continue','option','Exit']
-        self.option_button_names = ['language','render','Exit']
-        self.language_names = ['english','schinese','tchinese','Exit']
-        self.render_names = ['gpu+cpu', 'cpu_only']
+        self.option_button_names = ['language','render','Back']
+        self.language_names = ['english','schinese','tchinese','Back']
+        self.render_names = ['gpu+cpu', 'cpu_only', 'Back']
         self.button_nums = len(self.button_names)
         self.level = level
         self.bg = level.bg_img[config['title_cover_img']]
@@ -65,6 +66,22 @@ class Menu:
                 if self.level.dialog.option_menu:
                     self.level.dialog.option_menu.can_move = False
                     self.level.dialog.option_menu.selection_time = pygame.time.get_ticks()
+
+            if keys[pygame.K_ESCAPE]:
+                self.can_move = False
+                self.selection_time = pygame.time.get_ticks()
+                if self.menu_state == 'option':
+                    self.menu_state = self.level.menu_state
+                    self.selection_index = 0
+                    self.button_nums = len(self.button_names)
+                    if len(self.button_list) != self.button_nums:
+                        self.create_button()
+                elif self.menu_state == 'language' or self.menu_state == 'render':
+                    self.menu_state = 'option'
+                    self.selection_index = 0
+                    self.button_nums = len(self.option_button_names)
+                    if len(self.button_list) != self.button_nums:
+                        self.create_button()
 
     def selection_cooldown(self):
         if not(self.can_move):
@@ -121,6 +138,11 @@ class Menu:
         title_rect = title_surf.get_rect(midtop = (self.full_width/2, self.full_height/2) + pygame.math.Vector2(0, 20))
         screen.blit(title_surf, title_rect)
 
+        # maker info
+        maker_name = self.font.render('Made by:JingShing', False, self.menu_color)
+        maker_name_rect = title_surf.get_rect(center = (self.full_width/2, self.full_height/2) + pygame.math.Vector2(0, 20))
+        screen.blit(maker_name, maker_name_rect)
+
         self.show_buttons()
 
     def show_buttons(self):
@@ -129,10 +151,15 @@ class Menu:
                 self.button_list[index].display(screen, self.selection_index, name)
         elif self.menu_state == 'language':
             for index, name in enumerate(self.language_names):
-                self.button_list[index].display(screen, self.selection_index, name)
+                self.button_list[index].display(screen, self.selection_index, name, name==config['default_lang'])
         elif self.menu_state == 'render':
             for index, name in enumerate(self.render_names):
-                self.button_list[index].display(screen, self.selection_index, name)
+                if name == 'cpu_only' and config['cpu_only']:
+                    self.button_list[index].display(screen, self.selection_index, name, True)
+                elif name == 'gpu+cpu' and not config['cpu_only']:
+                    self.button_list[index].display(screen, self.selection_index, name, True)
+                else:
+                    self.button_list[index].display(screen, self.selection_index, name)
         else:
             # buttons
             for index, name in enumerate(self.button_names):
@@ -150,8 +177,11 @@ class Button:
         self.index = index
         self.font  = font
 
-    def display_names(self, surface, name, selected):
-        color = TEXT_COLOR_SELECTED if selected else TEXT_COLOR
+    def display_names(self, surface, name, selected, config=False):
+        if config:
+            color = 'green'
+        else:
+            color = TEXT_COLOR_SELECTED if selected else TEXT_COLOR
 
         # button name
         title_surf = self.font.render(name, False, color)
@@ -161,10 +191,13 @@ class Button:
         surface.blit(title_surf, title_rect)
 
     def trigger(self, level, menu):
+        sound_dict['talk'].play()
         option = menu.button_names[self.index]
+        # for option menu
         if menu.menu_state == 'option':
             option = menu.option_button_names[self.index]
-            if option == 'Exit':
+            if option == 'Back':
+                menu.selection_index = 0
                 menu.menu_state = level.menu_state
                 menu.button_nums = len(menu.button_names)
             else:
@@ -173,36 +206,35 @@ class Button:
                     menu.button_nums = len(menu.language_names)
                 elif option == 'render':
                     menu.button_nums = len(menu.render_names)
-            menu.selection_index = 0
         elif menu.menu_state == 'language':
             option = menu.language_names[self.index]
-            if option == 'Exit':
-                pass
+            if option == 'Back':
+                menu.menu_state = 'option'
+                menu.selection_index = 0
+                menu.button_nums = len(menu.option_button_names)
             else:
                 config['default_lang']=option
                 level.language = config['default_lang']
                 level.language_change()
-            menu.menu_state = 'option'
-            menu.selection_index = 0
-            menu.button_nums = len(menu.option_button_names)
         elif menu.menu_state == 'render':
             option = menu.render_names[self.index]
-            if option == 'Exit':
-                pass
+            if option == 'Back':
+                menu.menu_state = 'option'
+                menu.selection_index = 0
+                menu.button_nums = len(menu.option_button_names)
             else:
                 if option == 'cpu_only':
-                    config['only_cpu'] = True
+                    config['cpu_only'] = True
                 else:
-                    config['only_cpu'] = False
-            if config['only_cpu']:
+                    config['cpu_only'] = False
+            
+            if config['cpu_only']:
                 pygame.display.set_mode(VIRTUAL_RES)
             else:
                 pygame.display.set_mode(REAL_RES, pygame.DOUBLEBUF|pygame.OPENGL)
-            crt_shader.__init__(crt_shader.screen,VIRTUAL_RES=VIRTUAL_RES, cpu_only=config['only_cpu'])
-            menu.menu_state = 'option'
-            menu.selection_index = 0
-            menu.button_nums = len(menu.option_button_names)
+            crt_shader.__init__(crt_shader.screen,VIRTUAL_RES=VIRTUAL_RES, cpu_only=config['cpu_only'])
 
+        # for normal menu
         elif level.menu_state == 'title':
             if option == 'New game':
                 # level.__init__()
@@ -235,7 +267,7 @@ class Button:
         if menu.button_nums != len(menu.button_list):
             menu.create_button()
         
-    def display(self, surface, selection_num, name):
+    def display(self, surface, selection_num, name, config=False):
         if self.index == selection_num:
             pygame.draw.rect(surface, UPGRADE_BG_COLOR_SELECTED, self.rect)
             pygame.draw.rect(surface, UI_BORDER_COLOR, self.rect, 4)
@@ -243,5 +275,5 @@ class Button:
             pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
             pygame.draw.rect(surface, UI_BORDER_COLOR, self.rect, 4)
 
-        self.display_names(surface, name, self.index == selection_num)
+        self.display_names(surface, name, self.index == selection_num, config)
 
