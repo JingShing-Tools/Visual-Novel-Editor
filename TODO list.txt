@@ -1,9 +1,13 @@
 存檔功能
-多分支
-選項指令
-JUMP指令
-config hint, menu, intro_bgm
+(V)多分支
+(V)選項指令
+(V)JUMP指令
+(V)config hint, menu, intro_bgm
 角色動畫
-自訂音效
-typing時的音效
-character.voice=voice
+(V)自訂音效
+(V)typing時的音效
+(V)character.voice=voice
+(V)fix jump will eat command
+(V)option flicker problem
+(V)long sentence will broke select
+(V)need to fix text flicker problem
