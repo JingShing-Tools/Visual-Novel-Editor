@@ -44,138 +44,155 @@ if you use edit and text box is empty will trigger special effect.
 if you select line with this action will delete line. And if you didn't select line will refresh line list.
 
 - '@p.img=n' -> player's head image changed to npc's image.
+
 - '@bg=bg' -> change background image to certain image.
+
 - '@get' -> if you using edit line with this command you can get select line on text box.
+
 - '@copy' -> if you using add line with this command you can copy select line to the bottom of select line.
+
 - '@bgm=bgm_name' -> change bgm to the assets/audio/bgm/bgm_name.mp3
+
 - '@player=name' -> add a character to player name list. You can use it to create your own character and use it in script.
+
 - p.s. You may need to use 'name.img=p' to give it a image.
+
 - '@player=clear' -> clear player name list.
+
 - '@npc=name' -> add a character to npc name list.
+
 - p.s. You may need to use 'name.img=n' to give it a image.
+
 - '@npc=clear' -> clear npc name list.
+
 - '@end' -> use it in script to tell editor read to where to end reading.
+
 - '@sceneX' -> you need to put number in X to tell editor what scene is it.
+
 - '@delay=X' -> you need to put X a number to tell editor what conversation delay should be. Default is 35.
+
 - ':@' -> if you want to print '@' in dialogue just add ':' in line.
 
 ## Update
 
 ### ver 0.2
 
-add command system in input line.
-now has one command ':' which can refered which line is what character say.
-sample:
-player:line
-npc:line
-
-you can also use short way:
-p:line
-n:line
-
-if you don't use ':' to refered character. system will default as npc say.
-now npc use black text color. player use red.
-
-and now add line system upgrade. line will add next to the line you chose
-in text list box.
-
-edit line system changed.
-example-> 'n:hello'
-If you only text 'p:' : the line will only change talker -> 'p:hello'
-If you only text 'line' : the line will only change text -> 'n:line'
-If you text 'p:line' : the line will all change -> 'p:line'
+- add command system in input line.
+  now has one command ':' which can refered which line is what character say.
+  sample:
+  player:line
+  npc:line
+- you can also use short way:
+  p:line
+  n:line
+- if you don't use ':' to refered character. system will default as npc say.
+  now npc use black text color. player use red.
+- and now add line system upgrade. line will add next to the line you chose
+  in text list box.
+- edit line system changed.
+  example-> 'n:hello'
+  If you only text 'p:' : the line will only change talker -> 'p:hello'
+  If you only text 'line' : the line will only change text -> 'n:line'
+  If you text 'p:line' : the line will all change -> 'p:line'
 
 ### ver0.3
 
-can change img now.
-using '@' command:
+- can change img now.
+  using '@' command:
+
 examples->
+
+```
 '@n.img=p' -> change npc's image to player
 '@npc.img=player' -> change npc's image to player
 add multi bg control
+```
 
-add '@bg=name' command
-can use @bg=name to change bg to the name level had bg name.
+- add '@bg=name' command
+  can use @bg=name to change bg to the name level had bg name.
+- add '@copy' command
+  if you type @same and click add line button. It will copy the line
+  you select in list. and add same line under it.
 
-add '@copy' command
-if you type @same and click add line button. It will copy the line
-you select in list. and add same line under it.
-
-add '@get' command
-use edit line to get the line select
+- add '@get' command
+  use edit line to get the line select
 
 ### ver0.4
 
-add '@bgm=bgm_name' command
-'@bgm=bgm_name' will change bgm into bgm in audio folder.
+- add '@bgm=bgm_name' command
+
+- '@bgm=bgm_name' will change bgm into bgm in audio folder.
 
 ### ver0.5
 
-add multilang change function.
-add new function in level -> change_line_script(self, script_name) :
-can import script and multilangs script into game
+- add multilang change function.
+- add new function in level -> change_line_script(self, script_name) :
+  can import script and multilangs script into game
 
 ### ver0.6
 
-add custom player name and custom npc name
-bug:edit line feature kinda broke
-fixed:level.language_change func init the lines
+- add custom player name and custom npc name
+- bug:edit line feature kinda broke
+- fixed:level.language_change func init the lines
+- add new command in script : 
+  '@player=name' and '@npc=name' will add name to list and can refer as character name.
+  example -> '@player=JingShing' character will named JingShing.
+  and you need to use custom name to write lines
+  name:line instead of player:line
 
-add new command in script : 
-'@player=name' and '@npc=name' will add name to list and can refer as character name.
-example -> '@player=JingShing' character will named JingShing.
-and you need to use custom name to write lines
-name:line instead of player:line
+- '@player=clear' or '@npc=clear' will clear name list
 
-'@player=clear' or '@npc=clear' will clear name list
+- add multi character icon system. It will add a new key to dict
+  to recognize what custom name should be used what image.
+  In default if you create a new name. default will set image to 'none'.
+  you need to use '@name.img=p' to change img.
 
-add multi character icon system. It will add a new key to dict
-to recognize what custom name should be used what image.
-In default if you create a new name. default will set image to 'none'.
-you need to use '@name.img=p' to change img.
+- add flag feature. You can now write all scene in one script.
+  You just need to add '@end' to note the end of scene.
+  And use '@scene name' to add flag to different stages.
 
-add flag feature. You can now write all scene in one script.
-You just need to add '@end' to note the end of scene.
-And use '@scene name' to add flag to different stages.
+- add new way to add images. If you want to add a new image for your game.
+  Just put image into 'assets/graphics/characters/' or 'assets/graphics/stages/'
+  System will automatically sort into dict for you. Now can only differ 'png' and 'png' format.
+  it will be like 'image.png' -> dict = {'image' : surface('image.png')}
 
-add new way to add images. If you want to add a new image for your game.
-Just put image into 'assets/graphics/characters/' or 'assets/graphics/stages/'
-System will automatically sort into dict for you. Now can only differ 'png' and 'png' format.
-it will be like 'image.png' -> dict = {'image' : surface('image.png')}
+- fixed : @bg command change bg slower than command order
 
-fixed : @bg command change bg slower than command order
+- add auto classify bgm system
 
-add auto classify bgm system
+- now can make people say '@'
 
-now can make people say '@'
+- add '@delay' command to control dialogues speed.
 
-add '@delay' command to control dialogues speed.
-
-to do: add custom flag instead of 'scene num'
-
+- to do: add custom flag instead of 'scene num'
 
 
 ### ver 0.7
 
-bug: no dialogue in folder fault
-fixed
+- bug: no dialogue in folder fault
+  fixed
+- add '@name.color=color' command to change text color
+  now switching character will refresh text.
 
-add '@name.color=color' command to change text color
+- add a config file can modify helper window, title screen text and dialogue file name default.
 
-now switching character will refresh text.
+- add new feature you can now just define talker name onece than just add text.
 
-add a config file can modify helper window, title screen text and dialogue file name default.
-
-add new feature you can now just define talker name onece than just add text.
 example->
+
+```
 n:text
 text
 text
+```
 
 same as
+
+```
 n:text
 n:text
 n:text
+```
 
 ### ver 0.8
 
