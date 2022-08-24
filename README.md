@@ -297,6 +297,8 @@ fixed '@refresh' command bug
 
 - [ ] 存檔功能
 - [ ] 角色動畫
+- [ ] 手柄支持
+- [ ] 移植
 
 ## Done
 
