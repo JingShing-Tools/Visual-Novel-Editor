@@ -51,73 +51,70 @@ RainyCity雨都 使用這款工具開發，可以在 itch.io 取得 : https://ji
 
 - '@get' -> 如果在編輯框輸入這指令，並點擊edit，則可以得到當前選中對話列表的對話。
 
-- '@copy' -> if you using add line with this command you can copy select line to the bottom of select line.
+- '@copy' -> 如果編輯框輸入這指令，並點擊add line，可以把選中行複製到選中行的下一行。
 
-- '@bgm=bgm_name' -> change bgm to the assets/audio/bgm/bgm_name.mp3
+- '@bgm=bgm_name' -> 更改bgm到 assets/audio/bgm/bgm_name.mp3
 
-- '@player=name' -> add a character to player name list. You can use it to create your own character and use it in script.
+- '@player=name' -> 增加一個角色到玩家角色清單。可以使用這指令增加角色。
 
-- p.s. You may need to use 'name.img=p' to give it a image.
+- 備注： 你可能需要使用 'name.img=p' 來給自定義角色一張頭像。
 
-- '@player=clear' -> clear player name list.
+- '@player=clear' -> 清空玩家列表。
 
-- '@npc=name' -> add a character to npc name list.
+- '@npc=name' -> 增加角色到npc列表
 
-- p.s. You may need to use 'name.img=n' to give it a image.
+- 備注： 你可能需要使用 'name.img=n' 給它一個頭像。
 
-- '@npc=clear' -> clear npc name list.
+- '@npc=clear' -> 清空npc清單
 
-- '@end' -> use it in script to tell editor read to where to end reading.
+- '@end' -> 使用這個在腳本結尾處，告訴系統這邊結束。
 
-- '@sceneX' -> you need to put number in X to tell editor what scene is it.
+- '@sceneX' -> 你需要在X放數字，放在劇本中，和編輯器說哪裡是場景幾。
 
-- '@delay=X' -> you need to put X a number to tell editor what conversation delay should be. Default is 35.
+- '@delay=X' -> 你需要把 X 放個數字告訴編輯器延遲多少。預設是 35。
 
-- ':@' -> if you want to print '@' in dialogue just add ':' in line.
+- ':@' -> 如果你想在對話印出 '@' 只需要在前面加個 ':'。
 
-## Update
+## Update更新
 
 ### ver 0.2
 
-- add command system in input line.
-  now has one command ':' which can refered which line is what character say.
-  sample:
-  player:line
-  npc:line
-- you can also use short way:
-  p:line
-  n:line
-- if you don't use ':' to refered character. system will default as npc say.
-  now npc use black text color. player use red.
-- and now add line system upgrade. line will add next to the line you chose
-  in text list box.
-- edit line system changed.
-  example-> 'n:hello'
-  If you only text 'p:' : the line will only change talker -> 'p:hello'
-  If you only text 'line' : the line will only change text -> 'n:line'
-  If you text 'p:line' : the line will all change -> 'p:line'
+- 新增編輯框指令
+  現在有一個指令 ':' 可以知道哪個角色說話。
+  範例:
+  玩家:台詞
+  npc:台詞
+- 你可以用縮寫:
+  p:台詞
+  n:台詞
+- 如果你不使用 ':' 來指定角色。 系統會預設為npc說的話。
+  現在npc用黑色說話，玩家用紅色。
+- 新增台詞機制升級。台詞會新增在選定台詞的後面。
+- 更改台詞系統更新。
+  範例-> 'n:hello'
+  如果只打 'p:' : 台詞只會更改講者 -> 'p:hello'
+  如果只打 'line' : 只有台詞會被更新 -> 'n:line'
+  如果輸入 'p:line' : 整行會被更改 -> 'p:line'
 
 ### ver0.3
 
-- can change img now.
-  using '@' command:
+- 可以更改圖片了.
+  使用 '@' 指令:
 
-examples->
+範例->
 
 ```
-'@n.img=p' -> change npc's image to player
-'@npc.img=player' -> change npc's image to player
-add multi bg control
+'@n.img=p' -> 更改 npc 的圖片為玩家的圖片
+'@npc.img=player' -> 和上行同理
+新增多重背景控制
 ```
 
-- add '@bg=name' command
-  can use @bg=name to change bg to the name level had bg name.
-- add '@copy' command
-  if you type @same and click add line button. It will copy the line
-  you select in list. and add same line under it.
-
-- add '@get' command
-  use edit line to get the line select
+- 新增 '@bg=name' 指令
+  可以使用 @bg=name 更改為同名的背景圖片。
+- 新增 '@copy' 指令
+  如果你輸入 @copy 到編輯框然後點擊add line按扭。 它會複製你選中的行到選中行的下一行。
+- 新增 '@get' 指令
+  輸入到編輯框，然後點擊edit line，可以得到選中行的文字。
 
 ### ver0.4
 
