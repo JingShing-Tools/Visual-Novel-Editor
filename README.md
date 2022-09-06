@@ -4,7 +4,7 @@
 
 English | [繁體中文](https://github.com/JingShing/Visual-Novel-Editor/blob/main/README_TCH.md)
 
-A derivative of my Dialogue Editor. It's purely a visual novel style
+A derivative of my [Dialogue Editor](https://github.com/JingShing/Pygame-Dialogue-Editor). It's purely a visual novel style.
 
 You can get this editor exe now on Itch.io : https://jingshing.itch.io/visualnovelmaker
 
