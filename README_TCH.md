@@ -5,52 +5,51 @@
 
 [English](https://github.com/JingShing/Visual-Novel-Editor/blob/main/README.md) | 繁體中文
 
-A derivative of my Dialogue Editor. It's purely a visual novel style
+一個自我[對話編輯器](https://github.com/JingShing/Pygame-Dialogue-Editor)衍生的作品。 遊戲小說風格。
 
-You can get this editor exe now on Itch.io : https://jingshing.itch.io/visualnovelmaker
+你可以在 Itch.io 取得打包好的版本 : https://jingshing.itch.io/visualnovelmaker
 
-A sample game based on this editor is available on itch.io : https://jingshing.itch.io/crt-prison
+一款樣板遊戲可以在 itch.io 取得 : https://jingshing.itch.io/crt-prison
 
-RainyCity based on this tool now available on itch.io : https://jingshing.itch.io/raincity
+RainyCity雨都 使用這款工具開發，可以在 itch.io 取得 : https://jingshing.itch.io/raincity
 
-It's based on pygame.
+根據pygame開發。
 
-You can change npc image and bg.
+你可以更改角色頭像。
 
-I love this project. I add a command system in that. So it can easily process the act or line I want.
+我愛這個專案，我增加了指令系統。它可以讓你更簡單的運行每一行指令和操作。
 
-press 'T' to talk.
+按 'T' 說話
 
-press 'enter' to continue dialogue.
+按 'enter' 繼續對話
 
-press 'F' to fullscreen.
+按 'F' 全屏
 
-press '0' to change filter. -> now has crt tv, scan line and no filter.
+按 '0' 更改濾鏡 -> 目前有CRT電視濾鏡、掃描線和沒有濾鏡。
 
-p.s. If you want to use this visual novel maker and don't know how to write a dialogue script with command. can look my scripts
-on here : https://github.com/JingShing/Visual-Novel-Scripts
+備注： 如果你想使用這工具，但不知道怎麼寫指令，可以參考我的腳本 : https://github.com/JingShing/Visual-Novel-Scripts
 
-dialogue format(p or n can represent player and npcs):
+
+## 對話格式(p 和 n 可以表示 player玩家 和 npcs非玩家角色):
 ---
 
-'talker:line' to make system know who is talked now and can using right text color, text font and text size.
+'講者:對話' 讓系統知道是誰在說話。
 
-Now only has player and npc two type talker. Custom talker type will be update in the future version.
+現在能讓玩家和非玩家角色對話，更多自定義內容請等待更新。
 
-Every talkers' text style can be changed in future edition.
+每個講者的字體將在未來版本可自定義。
 
-commands(all using @ forehead. and p or n can represent player and npcs):
+
+## 指令系統(所有指令都使用 @ 作為開頭語句。 且 p 或 n 可以表示 player玩家 或 npcs非玩家角色):
 ---
 
-if you use edit and text box is empty will trigger special effect.
+如果你使用編輯器自帶的edit，而編輯框中是空格，將觸發特殊效果：如果你選中了對話列表的台詞，將會刪除此台詞；如果沒有選中特定台詞則會刷新台詞列表。
 
-if you select line with this action will delete line. And if you didn't select line will refresh line list.
+- '@p.img=n' -> 玩家頭像替換成npc頭像。
 
-- '@p.img=n' -> player's head image changed to npc's image.
+- '@bg=img' -> 更改背景成特定圖片。
 
-- '@bg=bg' -> change background image to certain image.
-
-- '@get' -> if you using edit line with this command you can get select line on text box.
+- '@get' -> 如果在編輯框輸入這指令，並點擊edit，則可以得到當前選中對話列表的對話。
 
 - '@copy' -> if you using add line with this command you can copy select line to the bottom of select line.
 
