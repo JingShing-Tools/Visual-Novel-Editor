@@ -118,13 +118,13 @@ RainyCity雨都 使用這款工具開發，可以在 itch.io 取得 : https://ji
 
 ### ver0.4
 
-- add '@bgm=bgm_name' command
+- 新增 '@bgm=bgm_name' 指令
 
-- '@bgm=bgm_name' will change bgm into bgm in audio folder.
+- '@bgm=bgm_name' 可以把bgm更改成audio/bgm資料夾中的bgm
 
 ### ver0.5
 
-- add multilang change function.
+- 新增多語言切換功能
 - add new function in level -> change_line_script(self, script_name) :
   can import script and multilangs script into game
 
