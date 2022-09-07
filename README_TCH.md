@@ -285,12 +285,11 @@ fixed '@refresh' command bug
 - fixed:save_file.txt bug fixed.
 - add option menu -> can edit render mode and language by gui now.
 
-
 ### ver0.95
 
-- custom available languages in config
-- now every chracter image only need facing right. NPC type will flip.
-- update shader class
+- 可在配置中自定義可用語言
+- 所有角色頭像朝右，只有npc頭像會水平翻轉
+- 優化 取色器 模塊
 
 ## Up to do
 
@@ -304,12 +303,12 @@ fixed '@refresh' command bug
 - [x] 多分支
 - [x] 選項指令
 - [x] JUMP指令
-- [x] config hint, menu, intro_bgm
+- [x] config 增加 hint, menu, intro_bgm 屬性
 - [x] 自訂音效
 - [x] typing時的音效
 - [x] character.voice=voice
-- [x] fix jump will eat command
-- [x] option flicker problem
-- [x] long sentence will broke select
-- [x] need to fix text flicker problem
+- [x] jump指令會吃掉指令
+- [x] 選項閃爍問題
+- [x] 修復長句子會把選項弄壞
+- [x] 文字閃爍問題
 
