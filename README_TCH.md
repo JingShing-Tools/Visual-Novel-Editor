@@ -220,9 +220,9 @@ n:text
 - 去除切換角色清空對話框功能
 - 新增腳本指令 '@refresh' 清空對話框
 
-- add '@textbox.alpha=X' command to change alpha value of textbox
-- add '@textbox.color=X,X,X' command to change color
-- add new mode of '@color' command you can use color name or rgb value
+- 新增 '@textbox.alpha=X' 指令，更改對話框透明度
+- 新增 '@textbox.color=X,X,X' 指令，用以指定RGB
+- 新增 '@color' 指令新模式：你可以使用顏色名或RGB數值更改顏色
 
 
 - add attribute to config:
@@ -290,7 +290,7 @@ n:text
 - 所有角色頭像朝右，只有npc頭像會水平翻轉
 - 優化 取色器 模塊
 
-## Up to do
+## Up to do 日後待定
 
 - [ ] 存檔功能
 - [ ] 角色動畫
