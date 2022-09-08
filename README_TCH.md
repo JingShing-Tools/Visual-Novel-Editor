@@ -9,9 +9,10 @@
 
 你可以在 Itch.io 取得打包好的版本 : https://jingshing.itch.io/visualnovelmaker
 
-一款樣板遊戲可以在 itch.io 取得 : https://jingshing.itch.io/crt-prison
+使用這個工具開發的遊戲
+* [CRT監獄(樣品)](https://jingshing.itch.io/crt-prison)
 
-RainyCity雨都 使用這款工具開發，可以在 itch.io 取得 : https://jingshing.itch.io/raincity
+* [RainyCity雨都](https://jingshing.itch.io/raincity)
 
 根據pygame開發。
 
