@@ -245,51 +245,49 @@ n:text
 
 ### ver 0.92
 
-- now can use shift to speed coversation
+- 現在可以透過按 'shift' 加速對話
 
-- fixed textbox alpha range problem
+- 修復對話框透明度範圍問題
 
-- add '@jump tag' command
-  you need to use '@tag' first
+- 新增 '@jump tag' 指令，可以跳到指定標記
+  需要先使用 '@tag' 製造標記
 
-- press 'U' to switch cpu render or gpu render
-
+- 按 'U' 切換渲染方式(GPU或CPU)
 
 ### ver 0.93
 
-- press 'shift' to speed up
+- 按 'shift' 加速
 
-- add '@jump file tag'
+- 新增 '@jump file tag'
 
-- update sound system now can auto detect sound effect
+- 更新音效系統，可以自動偵測音檔並分類
 
-- you can now using '#' in dialogues script to make comment
+- 你可以在腳本中使用 '#' 來編寫註解
 
-- \# can't put jump after refresh since jump has refresh func
-  \# fixed. refresh and jump command conflit fixed.
+- \# 無法同時把jump和refresh指令放在一起，因為兩者都有清空對話框功能，所以互斥
+  \# 已修復，可以同時放jump和refresh
 
-- if you need narration you can use 'none:' to talk
+- 如果需要旁白，可以調用 'none:' 來進行說明
 
-- now textbox no longer fliker
+- 現在對話框不再閃爍
 
 ### ver 0.94
 
-- add config: ending_bg and ending_bgm
-- add delay between refresh(you can use shift to speed up)
-- fixed:'@jump tag' and '@scene' feature can't use in other language. fixed.
-- add '@optionX=text' command
-  you can use '@option.text=text', '@option.command=command', '@option.clear' now
-- edit:'@option.command' == '@option.com' -> '@option.com=command' it would
-  put @ in command
-- fixed: jump will eat command.
+- 新增配置檔屬性: ending_bg 和 ending_bgm
+- 在清框對話框時增加間隔時間(可以使用 shift 來加速)
+- 修復 : '@jump tag' 和 '@scene' 功能無法使用在其他語言。已修復。
+- 新增 '@optionX=text' 指令，作為對話選項的功能，可以提供不同對話分支
+  現在可以使用 '@option.text=text', '@option.command=command', '@option.clear'
+- 更改 : '@option.command' == '@option.com' -> '@option.com=command' 他會把command
+  中埔全 '@'
+- 已修復 : jump 會吃掉指令
 
-- removed most crt_shader.render to avoid flicker. only keep main and dialog.
-  to update screen.
-- bug:can't put select and lines after refresh
-- fixed:use add line to fix bug
-- fixed:jump failed add weird line in wrong place
-- fixed:save_file.txt bug fixed.
-- add option menu -> can edit render mode and language by gui now.
+- 移除大部分 crt_shader.render 函數避免閃爍。只保留在主模塊和對話模塊更新畫面。
+- bug : 無法在refresh後放台詞和對話分支
+- 修復 : 使用add line修復bug
+- 修復 : jump 失敗後導致台詞出現在奇怪的地方
+- 修復 : save_file.txt bug 修復
+- 新增選項選單 -> 可以透過選單更改語言和渲染方式
 
 ### ver0.95
 
