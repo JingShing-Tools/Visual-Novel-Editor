@@ -216,6 +216,7 @@ n:text
   - // now has english, schinese, tchinese
   - ending=Nothing there
   - // ending line
+- config is space-sensitive
 
 ### ver 0.9
 
