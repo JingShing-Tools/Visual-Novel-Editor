@@ -7,7 +7,7 @@
 
 一個自我[對話編輯器](https://github.com/JingShing/Pygame-Dialogue-Editor)衍生的作品。 遊戲小說風格。
 
-你可以在 Itch.io 取得打包好的版本 : https://jingshing.itch.io/visualnovelmaker
+打包好的[視覺小說製作大師](https://jingshing.itch.io/visualnovelmaker)
 
 使用這個工具開發的遊戲
 * [CRT監獄(樣品)](https://jingshing.itch.io/crt-prison)
