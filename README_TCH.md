@@ -28,7 +28,7 @@
 
 按 '0' 更改濾鏡 -> 目前有CRT電視濾鏡、掃描線和沒有濾鏡。
 
-備注： 如果你想使用這工具，但不知道怎麼寫指令，可以參考我的腳本 : https://github.com/JingShing/Visual-Novel-Scripts
+備注： 如果你想使用這工具，但不知道怎麼寫指令，可以參考[我的腳本](https://github.com/JingShing/Visual-Novel-Scripts)
 
 
 ## 對話格式(p 和 n 可以表示 player玩家 和 npcs非玩家角色):
