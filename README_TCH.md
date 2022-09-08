@@ -212,6 +212,7 @@ n:text
   - // 現在可選的語言 english, schinese, tchinese
   - ending=Nothing there
   - // 結尾語句
+- config 是 空格敏感的(space-sensitive)
 
 ### ver 0.9
 
@@ -225,12 +226,17 @@ n:text
 - 新增 '@color' 指令新模式：你可以使用顏色名或RGB數值更改顏色
 
 
-- add attribute to config:
+- 新增配置檔案屬性:
   - resolution=800,600
+  - // 解析度
   - window_size=800,600
+  - // 視窗尺寸
   - allow_img_format=png,jpg,bmp
+  - // 允許的圖片格式
   - text_frame_alpha=255
+  - // 對話框透明度
   - text_frame_color=255,255,255
+  - // 對話框顏色(RGB)
 
 ### ver 0.91
 
