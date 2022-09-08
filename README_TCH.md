@@ -125,19 +125,19 @@ RainyCity雨都 使用這款工具開發，可以在 itch.io 取得 : https://ji
 ### ver0.5
 
 - 新增多語言切換功能
-- add new function in level -> change_line_script(self, script_name) :
-  can import script and multilangs script into game
+- 在 level 腳本新增函數 -> change_line_script(self, script_name) :
+  可以導入不同腳本到遊戲中
 
 ### ver0.6
 
-- add custom player name and custom npc name
-- bug:edit line feature kinda broke
+- 新增自訂玩家和NPC名字功能。
+- bug:edit line 功能損壞
 - fixed:level.language_change func init the lines
-- add new command in script : 
-  '@player=name' and '@npc=name' will add name to list and can refer as character name.
-  example -> '@player=JingShing' character will named JingShing.
-  and you need to use custom name to write lines
-  name:line instead of player:line
+- 在腳本編寫處新增指令 : 
+  '@player=name' 和 '@npc=name' 會把名字加到對應的清單中
+  範例 -> '@player=JingShing' 玩家清單中會添加名為 JingShing 的角色
+  之後要直接用角色名寫對話
+  * -> name:line 而不是 player:line
 
 - '@player=clear' or '@npc=clear' will clear name list
 
