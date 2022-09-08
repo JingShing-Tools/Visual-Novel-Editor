@@ -139,45 +139,45 @@ RainyCity雨都 使用這款工具開發，可以在 itch.io 取得 : https://ji
   之後要直接用角色名寫對話
   * -> name:line 而不是 player:line
 
-- '@player=clear' or '@npc=clear' will clear name list
+- '@player=clear' 和 '@npc=clear' 會把名字清單清除
 
-- add multi character icon system. It will add a new key to dict
-  to recognize what custom name should be used what image.
-  In default if you create a new name. default will set image to 'none'.
-  you need to use '@name.img=p' to change img.
+- 新增角色頭像管理系統。會添加鍵值到字典
+  * 用以紀錄角色名和對應頭像
+  預設你創建角色，角色頭像會設為：'none'
+  你需要用 '@name.img=p' 以更改圖像
 
-- add flag feature. You can now write all scene in one script.
-  You just need to add '@end' to note the end of scene.
-  And use '@scene name' to add flag to different stages.
+- 新增 Flag標誌 功能。可以增加標誌到腳本中，讓同一個腳本有不同的場景搭配
+  你只需要在場景最後添加 '@end' 作為標記場景結尾
+  並在開頭加上 '@scene name' 做為不同場景的標記
 
-- add new way to add images. If you want to add a new image for your game.
-  Just put image into 'assets/graphics/characters/' or 'assets/graphics/stages/'
-  System will automatically sort into dict for you. Now can only differ 'png' and 'png' format.
-  it will be like 'image.png' -> dict = {'image' : surface('image.png')}
+- 新增導入圖片的方法。如果想添加新的圖片素材
+  只要把圖片放在 'assets/graphics/characters/' 和 'assets/graphics/stages/'
+  系統會幫你自動分類成字典。現在只能分辨 'png' 和 'png' 格式
+  運作原理類似： 'image.png' -> dict = {'image' : surface('image.png')}
 
-- fixed : @bg command change bg slower than command order
+- fixed : @bg 指令更換背景順序較慢問題修復
 
-- add auto classify bgm system
+- 新增自動分類BGM系統
 
-- now can make people say '@'
+- 現在角色可以說出 '@' 字符了
 
-- add '@delay' command to control dialogues speed.
+- 新增 '@delay' 指令，控制對話速度
 
-- to do: add custom flag instead of 'scene num'
+- to do: 新增自定義場景標誌，而不是舊方法 'scene num'
 
 
 ### ver 0.7
 
-- bug: no dialogue in folder fault
-  fixed
-- add '@name.color=color' command to change text color
-  now switching character will refresh text.
+- bug: 沒有腳本於資料夾報錯
+  fixed 已修復
+- 新憎 '@name.color=color' 指令，用以編輯對話顏色
+  現在更換角色會刷新對話
 
-- add a config file can modify helper window, title screen text and dialogue file name default.
+- 新增 config配置 檔案可以自訂 helper window, title screen text標題文字 和腳本名稱預設
 
-- add new feature you can now just define talker name onece than just add text.
+- 可以不用在每一句開頭增加講者名稱，而是沿用上一位提及的講者。
 
-example->
+範例->
 
 ```
 n:text
@@ -185,7 +185,7 @@ text
 text
 ```
 
-same as
+等同於
 
 ```
 n:text
@@ -195,31 +195,30 @@ n:text
 
 ### ver 0.8
 
-- now switching character will refresh text page.
+- 現在更換角色會清空對話框
 
-
-- add config system:
+- 新增 config配置 系統:
   - need_help=True
-  - // open window or not
+  - // 編輯視窗開啟與否
   - title_screen_text=Game
-  - // set game title
+  - // 設定遊戲開頭標題
   - window_caption=Still_loading:
-  - // set game caption
+  - // 設定視窗標題
   - dialogue_file_name=default
-  - // default dialogue file name
+  - // 預設腳本檔案名稱
   - shader_default=2
-  - // shader default: 0, no shader. 1 crt shader. 2 scanline.
+  - // shader取色器，預設: 0, 無濾鏡. 1 crt 濾鏡. 2 掃描線.
   - default_lang=english
-  - // now has english, schinese, tchinese
+  - // 現在可選的語言 english, schinese, tchinese
   - ending=Nothing there
-  - // ending line
+  - // 結尾語句
 
 ### ver 0.9
 
-- add resolution and window size in config
-- add text frame alpha in config
-- remove switching character refresh text box
-- add new command '@refresh' to refresh textbox
+- 於設置檔新增螢幕解析度和視窗大小屬性
+- 於設置檔新增對話框透明度設定
+- 去除切換角色清空對話框功能
+- 新增腳本指令 '@refresh' 清空對話框
 
 - add '@textbox.alpha=X' command to change alpha value of textbox
 - add '@textbox.color=X,X,X' command to change color
@@ -235,7 +234,7 @@ n:text
 
 ### ver 0.91
 
-fixed '@refresh' command bug
+修復 '@refresh' 指令的錯誤
 
 ### ver 0.92
 
